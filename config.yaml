@@ -1,0 +1,21 @@
+project:
+  name: CommerceIQ
+  version: "0.1.0"
+  currency: BRL
+
+paths:
+  raw_ecommerce: data/raw/ecommerce
+  raw_marketing: data/raw/marketing
+  raw_external: data/raw/external
+  interim: data/interim
+  processed: data/processed
+  rejected: data/rejected
+  metadata: data/metadata
+  logs: logs
+  reports: reports
+
+database:
+  name: commerceiq
+
+logging:
+  level: INFO
