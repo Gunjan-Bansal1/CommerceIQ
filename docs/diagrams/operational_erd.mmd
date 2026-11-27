@@ -1,0 +1,104 @@
+erDiagram
+    category_translation ||--o{ products : "categorizes (Required FK)"
+    customers ||--|| orders : "places (Required FK)"
+    orders ||--o{ order_items : "contains (Required FK)"
+    products ||--o{ order_items : "sold_as (Required FK)"
+    sellers ||--o{ order_items : "fulfills (Required FK)"
+    orders ||--o{ payments : "paid_via (Required FK)"
+    orders ||--o{ reviews : "reviewed_in (Required FK)"
+    marketing_leads ||--o| closed_deals : "converts_to (Required FK)"
+
+    geolocation_lookup ||--o{ customers : "approx_zip (Optional, 279 unmatched)"
+    geolocation_lookup ||--o{ sellers : "approx_zip (Optional, 7 unmatched)"
+    sellers ||--o| closed_deals : "matches_seller (Optional, 462 unmatched)"
+
+    category_translation {
+        varchar product_category_name PK
+        varchar product_category_name_english
+    }
+    customers {
+        char customer_id PK
+        char customer_unique_id
+        char customer_zip_code_prefix
+        varchar customer_city
+        char customer_state
+        tinyint has_geolocation_match
+    }
+    sellers {
+        char seller_id PK
+        char seller_zip_code_prefix
+        varchar seller_city
+        char seller_state
+        tinyint has_geolocation_match
+        tinyint has_recorded_marketing_deal
+    }
+    products {
+        char product_id PK
+        varchar product_category_name FK
+        double product_weight_g
+        double product_volume_cm3
+    }
+    orders {
+        char order_id PK
+        char customer_id FK
+        varchar order_status
+        datetime order_purchase_timestamp
+        date order_estimated_delivery_date
+        tinyint is_on_time_delivery
+    }
+    order_items {
+        char order_id PK,FK
+        int order_item_id PK
+        char product_id FK
+        char seller_id FK
+        decimal price
+        decimal freight_value
+        decimal item_value_with_freight
+    }
+    payments {
+        char order_id PK,FK
+        int payment_sequential PK
+        varchar payment_type
+        int payment_installments
+        decimal payment_value
+    }
+    reviews {
+        char review_id PK
+        char order_id PK,FK
+        tinyint review_score
+        varchar rating_classification
+    }
+    marketing_leads {
+        char mql_id PK
+        date first_contact_date
+        varchar origin
+        tinyint has_closed_deal
+    }
+    closed_deals {
+        char mql_id PK,FK
+        char seller_id
+        datetime won_date
+        decimal declared_monthly_revenue
+        tinyint has_marketplace_seller_match
+    }
+    geolocation_lookup {
+        char zip_code_prefix PK
+        varchar city
+        char state
+        double latitude
+        double longitude
+        tinyint is_ambiguous_zip
+    }
+    geolocation {
+        bigint geolocation_id PK
+        char geolocation_zip_code_prefix
+        double geolocation_lat
+        double geolocation_lng
+    }
+    brazil_holidays {
+        date date PK
+        char country_code PK
+        varchar local_name
+        varchar name
+        tinyint is_global
+    }

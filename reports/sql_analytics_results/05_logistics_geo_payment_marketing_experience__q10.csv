@@ -1,0 +1,4 @@
+delivery_performance,review_count,mean_review_score,positive_pct,negative_pct
+early,88653,4.2937,82.77,9.23
+on_time,1291,4.0333,73.82,12.39
+late,6409,2.2710,26.71,62.41

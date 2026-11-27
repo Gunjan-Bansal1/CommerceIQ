@@ -1,0 +1,3 @@
+period_scope,total_orders,delivered_orders,eligible_delivered_orders,delivered_merchandise_brl,delivered_freight_brl,recorded_gmv_all_statuses_brl,recorded_payment_all_statuses_brl,avg_order_value_brl
+Core (2017-01..2018-08),99092,96211,96211,13181027.13,2192092.88,13541712.78,15944480.57,137.00
+Boundary Months,349,267,267,40470.98,6182.76,49930.92,64391.55,151.58

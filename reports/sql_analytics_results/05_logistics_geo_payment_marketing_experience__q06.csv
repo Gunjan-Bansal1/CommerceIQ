@@ -1,0 +1,3 @@
+payment_pattern,orders,avg_payment_brl,discrepancy_orders
+Single Payment,96479,160.83,990
+Multiple Payments,2961,166.20,42

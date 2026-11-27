@@ -1,0 +1,25 @@
+erDiagram
+    dim_date ||--o{ fact_orders : "purchase_date / delivered_date / estimated_date"
+    dim_customer ||--|| fact_orders : "customer_key"
+    dim_geography ||--o{ fact_orders : "customer_geo_key"
+    dim_geography ||--o{ dim_customer : "geo_key"
+    dim_geography ||--o{ dim_seller : "geo_key"
+
+    fact_orders ||--o{ fact_order_items : "order_key"
+    dim_customer ||--o{ fact_order_items : "customer_key"
+    dim_product ||--o{ fact_order_items : "product_key"
+    dim_seller ||--o{ fact_order_items : "seller_key"
+    dim_date ||--o{ fact_order_items : "purchase_date_key"
+
+    fact_orders ||--o{ fact_payments : "order_key"
+    dim_customer ||--o{ fact_payments : "customer_key"
+    dim_payment_type ||--o{ fact_payments : "payment_type_key"
+    dim_date ||--o{ fact_payments : "purchase_date_key"
+
+    fact_orders ||--o{ fact_reviews : "order_key"
+    dim_customer ||--o{ fact_reviews : "customer_key"
+    dim_date ||--o{ fact_reviews : "review_date_key / purchase_date_key"
+
+    dim_marketing_channel ||--o{ fact_marketing_funnel : "channel_key"
+    dim_date ||--o{ fact_marketing_funnel : "first_contact_date_key / won_date_key"
+    dim_seller ||--o{ fact_marketing_funnel : "seller_key (-1 when unmatched)"

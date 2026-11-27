@@ -1,0 +1,7 @@
+rfm_segment,customer_count,customer_share_pct,avg_recency_days,avg_frequency,avg_monetary_brl,total_monetary_brl
+Recent High-Spend Single Buyers,14456,15.48,94.1,1.000,267.42,3865785.78
+At-Risk High-Spend,13856,14.84,398.0,1.000,276.02,3824577.50
+Dormant / Low-Engagement,40561,43.45,319.3,1.000,88.69,3597281.73
+Recent Single Buyers,21684,23.23,92.2,1.000,55.59,1205444.35
+Loyal Repeat Buyers,1870,2.00,288.3,2.077,226.36,423286.46
+Champions (Repeat High-Value),931,1.00,91.3,2.189,327.74,305122.29

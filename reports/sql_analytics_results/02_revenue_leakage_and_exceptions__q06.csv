@@ -1,0 +1,7 @@
+primary_payment_type,orders,canceled_orders,unavailable_orders,cancellation_rate_pct,unsuccessful_rate_pct
+credit_card,76504,444,443,0.58,1.16
+boleto,19784,95,150,0.48,1.24
+voucher,1621,76,10,4.69,5.31
+debit_card,1528,7,6,0.46,0.85
+not_defined,3,3,0,100.00,100.00
+no_payment_record,1,0,0,0.00,0.00

@@ -1,0 +1,2 @@
+total_orders,carrier_before_purchase,carrier_before_approval,delivery_before_approval,delivery_before_carrier,orders_without_items,orders_without_payments,orders_without_reviews
+99441,166,1359,61,23,775,1,768

@@ -1,0 +1,9 @@
+order_status,order_count,pct_of_all_orders,orders_with_item_values,orders_missing_item_values,value_coverage_pct,recorded_merch_value_brl,recorded_payment_value_brl
+delivered,96478,97.0203,96478,0,100.00,13221498.11,15422461.77
+shipped,1107,1.1132,1106,1,99.91,150727.44,177213.96
+canceled,625,0.6285,461,164,73.76,95235.27,143255.60
+unavailable,609,0.6124,6,603,0.99,2007.69,126479.51
+invoiced,314,0.3158,312,2,99.36,61526.37,69137.99
+processing,301,0.3027,301,0,100.00,60439.22,69394.11
+created,5,0.0050,0,5,0.00,0.00,688.10
+approved,2,0.0020,2,0,100.00,209.60,241.08

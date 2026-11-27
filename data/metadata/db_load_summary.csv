@@ -1,0 +1,14 @@
+table_name,rows_loaded,load_seconds,status
+category_translation,74,0.153,LOADED
+geolocation_lookup,19011,1.429,LOADED
+geolocation,720495,40.092,LOADED
+brazil_holidays,42,0.264,LOADED
+marketing_leads,8000,0.525,LOADED
+sellers,3095,0.194,LOADED
+customers,99441,10.832,LOADED
+products,32951,4.421,LOADED
+orders,99441,34.697,LOADED
+order_items,112650,21.829,LOADED
+payments,103886,9.037,LOADED
+reviews,99224,16.821,LOADED
+closed_deals,842,0.171,LOADED

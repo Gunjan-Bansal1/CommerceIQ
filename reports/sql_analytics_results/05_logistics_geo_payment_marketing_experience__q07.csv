@@ -1,0 +1,12 @@
+origin,channel_group,qualified_leads,closed_deals,conversion_rate_pct,matched_marketplace_sellers,mean_conversion_days,total_declared_monthly_revenue_brl
+organic_search,Organic / Direct,2296,271,11.80,113,50.85,51426000.00
+paid_search,Paid / Social,1586,195,12.30,101,57.27,9169000.00
+social,Paid / Social,1350,75,5.56,31,61.62,501000.00
+unknown,Other,1099,179,16.29,81,41.94,463006.00
+direct_traffic,Organic / Direct,499,56,11.22,31,31.77,60000.00
+email,Referral / Other,493,15,3.04,6,52.77,15000.00
+referral,Referral / Other,284,24,8.45,9,33.24,0.00
+other,Referral / Other,150,4,2.67,2,15.77,0.00
+display,Paid / Social,118,6,5.08,2,10.92,0.00
+other_publicities,Referral / Other,65,3,4.62,0,40.08,0.00
+not_recorded,Unrecorded,60,14,23.33,4,49.91,150000.00
