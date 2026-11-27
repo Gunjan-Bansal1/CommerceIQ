@@ -388,7 +388,7 @@ def export_processed_datasets(
     return manifest_df, schema_registry
 
 
-def run_cleaning(export=True):
+def run_cleaning(export=True, return_audit=False):
     """Execute validated CommerceIQ transformations."""
 
     # Transformation step 4.1
@@ -6355,7 +6355,7 @@ def run_cleaning(export=True):
             index=False
         )
 
-    return {
+    result = {
         "datasets": cleaned_datasets,
         "data_dictionary": final_data_dictionary_df,
         "quality_register": final_quality_register_df,
@@ -6363,6 +6363,23 @@ def run_cleaning(export=True):
         "validation_results": final_validation_df,
         "cleaning_audit": cleaning_audit_df
     }
+
+    if return_audit:
+        result["audit_tables"] = {
+            "final_dataset_summary": final_dataset_summary_df,
+            "final_key_validation": final_key_validation_df,
+            "final_dtype_validation": final_dtype_validation_df,
+            "cleaned_relationship": cleaned_relationship_df,
+            "duration_feature_summary": duration_feature_summary_df,
+            "delivery_performance_summary": delivery_performance_summary_df,
+            "rating_classification_summary": rating_classification_summary_df,
+            "quality_resolution_summary": quality_resolution_summary_df,
+            "financial_preservation": financial_preservation_df,
+            "geographic_summary": geographic_summary_df,
+            "join_validation": join_validation_df,
+        }
+
+    return result
 
 
 if __name__ == "__main__":

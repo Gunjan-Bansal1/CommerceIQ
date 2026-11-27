@@ -573,10 +573,10 @@ def build_workbook(logger: logging.Logger) -> dict[str, Any]:
     kpis_row2 = [
         ("B", "On-Time Delivery Rate", '=IFERROR(IF($K$3="All History",SUM(rng_ontime_deliv),SUMIFS(rng_ontime_deliv,rng_scope,$K$3))/IF($K$3="All History",SUM(rng_elig_deliv),SUMIFS(rng_elig_deliv,rng_scope,$K$3)),0)', "0.00%"),
         ("D", "Unsuccessful Order Rate", "=IFERROR(IF($K$3=\"All History\",SUM(rng_unsucc_orders),SUMIFS(rng_unsucc_orders,rng_scope,$K$3))/B6,0)", "0.00%"),
-        ("F", "Unique Delivered Customers", "='Customer Segments'!B10", "#,##0"),
-        ("H", "Repeat Purchase Rate", "='Customer Segments'!B12", "0.00%"),
+        ("F", "Unique Delivered Customers", "='Customer Segments'!B11", "#,##0"),
+        ("H", "Repeat Purchase Rate", "='Customer Segments'!B13", "0.00%"),
         ("J", "Marketing Lead Conversion", "=IFERROR(SUM('Marketing & Satisfaction'!D2:D12)/SUM('Marketing & Satisfaction'!C2:C12),0)", "0.00%"),
-        ("L", "Mean Order Review Score", "=AVERAGE('Monthly Trends'!P2:P26)", "0.00"),
+        ("L", "Mean Order Review Score", "=IFERROR(SUMPRODUCT('Monthly Trends'!D2:D26,'Monthly Trends'!P2:P26)/SUM('Monthly Trends'!D2:D26),0)", "0.00"),
     ]
 
     for row_base, group in [(5, kpis), (9, kpis_row2)]:
@@ -680,7 +680,7 @@ def build_workbook(logger: logging.Logger) -> dict[str, Any]:
     ws_dash.add_chart(ch2, "I21")
 
     for col_idx in range(1, 15):
-        ws_dash.column_dimensions[get_column_letter(col_idx)].width = 15
+        ws_dash.column_dimensions[get_column_letter(col_idx)].width = 19
 
     # Placeholder sheet for Native PivotTable, PivotChart & Slicers (populated by Excel COM)
     ws_piv = wb.create_sheet("Pivot Analysis")
@@ -759,6 +759,8 @@ def build_workbook(logger: logging.Logger) -> dict[str, Any]:
                 "xlookup_health_beauty_brl": round(float(ws_dash_com.Range("C15").Value), 2),
                 "pivot_grand_total_orders": int(round(pt.GetPivotData("Total Orders").Value)),
                 "pivot_grand_total_gmv_brl": round(float(pt.GetPivotData("Recorded GMV (BRL)").Value), 2),
+                "unique_delivered_customers": int(round(ws_dash_com.Range("F10").Value)),
+                "repeat_purchase_rate_pct": round(float(ws_dash_com.Range("H10").Value) * 100.0, 2),
             }
             wb_com.Save()
             logger.info("Excel COM automation added PivotTable, 3 Slicers, PivotChart & recalculated formulas.")
@@ -776,6 +778,8 @@ def build_workbook(logger: logging.Logger) -> dict[str, Any]:
     assert excel_reconciled["xlookup_health_beauty_brl"] > 1_000_000.0
     assert excel_reconciled["pivot_grand_total_orders"] == 99441
     assert abs(excel_reconciled["pivot_grand_total_gmv_brl"] - 13591643.70) < 0.05
+    assert excel_reconciled["unique_delivered_customers"] == 93358
+    assert abs(excel_reconciled["repeat_purchase_rate_pct"] - 3.00) < 0.05
 
     write_excel_report(out_path, excel_reconciled, pivot_verified, slicers_verified)
     return {

@@ -15,4 +15,8 @@ ref table fact_order_items
 ref table fact_payments
 ref table fact_reviews
 ref table fact_marketing_funnel
+ref table customer_rfm_segments
+ref table forecast_outputs
+ref table delivery_risk_predictions
+ref table decision_scenarios
 ref table _Measures

@@ -48,26 +48,77 @@ Diagram sources in [`docs/diagrams/`](file:///c:/Users/bgunj/Desktop/commerceIQ/
 
 - **Data Engineering & Testing:** Python 3.13.3, Pandas 3.1.1, NumPy 2.5.5, PyArrow 26.0, Pytest 9.2, GitHub Actions
 - **Database & Warehouse:** MySQL 8.0.44, SQLAlchemy 2.1.9, `mysql-connector-python`
-- **Business Intelligence:** Microsoft Excel (OpenPyXL + Excel 16.0 COM PivotTables/Slicers + Power Query `.pq`), Power BI (PBIP, TMDL Semantic Model, DAX, PBIR)
+- **Business Intelligence:** Microsoft Excel (OpenPyXL + Excel 16.0 COM PivotTables/PivotChart/Slicers + Power Query `.pq`), Power BI (PBIP, 17-table TMDL Semantic Model, 39 DAX measures, 10-page/84-visual PBIR)
+- **Interactive Web Application:** Streamlit 1.67.0, Plotly 7.2.0 (`app/main.py` 10-page CommerceIQ Analytics Studio)
 - **Analytics & ML:** Matplotlib, Seaborn, SciPy, Statsmodels, Scikit-Learn, Python-PPTX
+
+---
+
+## Interactive Analytics Studio (`app/main.py`)
+
+Launch the live 10-page interactive application backed directly by MySQL `commerceiq`, trained ML pipelines (`models/`), and illustrative sensitivity baselines:
+
+```powershell
+.venv\Scripts\python.exe -m streamlit run app/main.py
+```
+
+**Included Pages & Capabilities:**
+1. **Executive Overview** — Live filtered KPI cards, monthly dual-axis merchandise/order trends, lifecycle status mix, CSV download.
+2. **Sales and Product Analytics** — Category Pareto, YoY growth comparison, payment method share, installment breakdown.
+3. **Customer Intelligence** — Persistent `customer_unique_id` RFM segment totals, K-Means (`k = 3`) clusters, cohort repeat retention heatmap.
+4. **Seller Intelligence** — Marketplace seller concentration, scorecard tier distribution, seller-level drill-down explorer.
+5. **Logistics Analytics** — Approval/processing/transit duration breakdowns, carrier SLA attainment, state-to-state lane delays.
+6. **Customer Satisfaction** — Rating distribution, late-delivery rating impact, complaint theme quantification.
+7. **Marketing Intelligence** — 8,000 MQL → 842 won deal funnel conversion across origins, seller match coverage.
+8. **Geographic Analytics** — Interactive Brazil state bubble SLA map and macro-region delivery/freight table.
+9. **Predictive Analytics** — 12-week demand backtests, HGB delivery risk ROC/PR evaluation, and a **live Checkout Delay-Risk Scorer** using the serialized Scikit-Learn model.
+10. **Decision Simulator** — Real-time margin and initiative sensitivity sliders updating gross impact, illustrative contribution, and priority rankings.
+
+---
+
+## Visualization & Dashboard Gallery
+
+### Streamlit Analytics Studio (Live Rendered Captures)
+| Executive Overview | Predictive Analytics Studio |
+|---|---|
+| ![Executive Overview](app/screenshots/01_executive_overview.png) | ![Predictive Analytics Studio](app/screenshots/04_predictive_analytics.png) |
+
+| Geographic Analytics (Brazil) | Decision Intelligence Simulator |
+|---|---|
+| ![Geographic Analytics](app/screenshots/03_geographic_analytics.png) | ![Decision Simulator](app/screenshots/05_decision_simulator.png) |
+
+### Excel Business Analytics & Decision Simulator (`excel/`)
+| Executive Dashboard (COM Recalculated) | Pivot Analysis & Slicers |
+|---|---|
+| ![Excel Executive Dashboard](reports/figures/excel_executive_dashboard.png) | ![Excel Pivot Analysis](reports/figures/excel_pivot_analysis.png) |
+
+| Decision Simulator (`Low / Base / High`) |
+|---|
+| ![Excel Decision Simulator](reports/figures/excel_decision_simulator.png) |
+
+### Python Analytical & Predictive Figures (`reports/figures/`)
+| Monthly Trends & Seasonality | Customer Cohort & RFM | Demand Forecast Backtest |
+|---|---|---|
+| ![Monthly Trends](reports/figures/eda_01_monthly_trends_and_seasonality.png) | ![Customer RFM & Cohorts](reports/figures/cust_01_cohort_retention_and_rfm.png) | ![Demand Forecast](reports/figures/pred_01_demand_forecast_backtest.png) |
 
 ---
 
 ## Project Structure
 
+- `app/` — 10-page Streamlit + Plotly interactive **CommerceIQ Analytics Studio** (`main.py`, `data_access.py`, `theme.py`, view modules, and `screenshots/`)
 - `config.yaml`, `.env.example`, `requirements.txt` — Configuration & pinned environment dependencies
 - `src/ingestion/extract.py` — SHA-256 verified raw CSV ingestion
 - `src/transformation/clean.py` — Deterministic cleaning, deduplication, lookup & feature pipeline
 - `src/database/` & `sql/01_schema/` — MySQL 8.0 operational DDL, indexes, loader, and validation SQL
 - `src/warehouse/` & `sql/02_warehouse/` — Star schema (7 dims, 5 facts) & 9 business data marts
 - `sql/03_analytics/` & `src/analytics/run_sql_analytics.py` — 41 executed SQL queries tracing 120 business questions
-- `excel/` & `src/analytics/build_excel_workbook.py` — Executive Excel workbook, Decision Simulator, and Power Query `.pq` scripts
-- `powerbi/` — Native Power BI Project (`CommerceIQ.pbip`), TMDL semantic model, 39 DAX measures, and theme JSON
+- `excel/` & `src/analytics/build_excel_workbook.py`, `enhance_and_capture_excel.py` — Executive Excel workbook, Decision Simulator, COM recalculation & capture, Power Query `.pq` scripts
+- `powerbi/` — Native Power BI Project (`CommerceIQ.pbip`), 17-table TMDL semantic model, 39 DAX measures, 10-page/84-visual PBIR layout (`report.json`), and theme JSON
 - `notebooks/` — 8 executed Jupyter notebooks (`00_data_ingestion` through `07_delivery_risk_classification`) with outputs preserved
 - `src/forecasting/` & `src/optimization/` — Forecasting, zero-leakage delivery risk classification, and decision simulator
 - `pipelines/run_pipeline.py` & `.github/workflows/ci.yml` — End-to-end automated CLI runner and CI workflow
 - `docs/`, `reports/`, `presentation/` — Business requirements, KPI/question traceability, technical docs, executive PPTX, case study, and interview prep
-- `tests/` — Ingestion, cleaning, CI-synthetic, cross-tool reconciliation, and security test suites
+- `tests/` — Ingestion, cleaning, CI-synthetic, cross-tool reconciliation, Streamlit app smoke tests, and security test suites
 
 ---
 
@@ -85,12 +136,18 @@ Diagram sources in [`docs/diagrams/`](file:///c:/Users/bgunj/Desktop/commerceIQ/
    ```powershell
    python pipelines/run_pipeline.py --stages all --train-models
    ```
-3. **Run Tests**
+3. **Launch the Interactive Streamlit Studio**
+   ```powershell
+   python -m streamlit run app/main.py
+   ```
+4. **Run Tests**
    ```powershell
    python -m pytest tests/ -v
    ```
-4. **Open Power BI Project**
-   - Open `powerbi/CommerceIQ.pbip` in Power BI Desktop, enter local MySQL credentials for `commerceiq`, and click **Refresh**.
+5. **Open & Refresh Power BI Desktop (`PBIDesktopStore.exe`)**
+   - Double-click [`powerbi/CommerceIQ.pbip`](file:///c:/Users/bgunj/Desktop/commerceIQ/powerbi/CommerceIQ.pbip) in Power BI Desktop.
+   - Enter local MySQL credentials for `localhost / commerceiq` and approve **Organizational** privacy levels if prompted.
+   - Click **Refresh** on the Home ribbon to hydrate all 17 model tables across all 10 report pages (84 visuals), then export live Desktop screenshots to `powerbi/screenshots/` if desired.
 
 ---
 

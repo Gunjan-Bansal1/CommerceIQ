@@ -11,45 +11,101 @@
       "visualContainers": [
         {
           "x": 20,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"exec_overview_card_1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Total Placed Orders\"}]}}}"
+          "y": 15,
+          "width": 300,
+          "height": 75,
+          "config": "{\"name\": \"eo_sl_period\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_date.year_month_str\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Purchase Month'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"exec_overview_card_2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Orders\"}]}}}"
+          "x": 335,
+          "y": 15,
+          "width": 300,
+          "height": 75,
+          "config": "{\"name\": \"eo_sl_region\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_geography.region\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Customer Region'\"}}}}}]}}}"
         },
         {
-          "x": 630,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"exec_overview_card_3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}}}"
+          "x": 650,
+          "y": 15,
+          "width": 250,
+          "height": 75,
+          "config": "{\"name\": \"eo_sl_core\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"fact_orders.is_core_reporting_period\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Core Period (1=Yes)'\"}}}}}]}}}"
         },
         {
-          "x": 935,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"exec_overview_card_4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Average Delivered Order Value (BRL)\"}]}}}"
+          "x": 915,
+          "y": 15,
+          "width": 345,
+          "height": 75,
+          "config": "{\"name\": \"eo_nav\", \"singleVisual\": {\"visualType\": \"pageNavigator\", \"projections\": {}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Navigation'\"}}}}}]}}}"
         },
         {
           "x": 20,
-          "y": 160,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"exec_overview_card_5\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.On-Time Delivery Rate %\"}]}}}"
+          "y": 105,
+          "width": 240,
+          "height": 95,
+          "config": "{\"name\": \"eo_c1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivered Merchandise Value (BRL)'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 160,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"exec_overview_card_6\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Mean Review Score\"}]}}}"
+          "x": 270,
+          "y": 105,
+          "width": 190,
+          "height": 95,
+          "config": "{\"name\": \"eo_c2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Total Placed Orders\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Total Placed Orders'\"}}}}}]}}}"
+        },
+        {
+          "x": 470,
+          "y": 105,
+          "width": 210,
+          "height": 95,
+          "config": "{\"name\": \"eo_c3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Average Delivered Order Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Average Delivered Order Value (BRL)'\"}}}}}]}}}"
+        },
+        {
+          "x": 690,
+          "y": 105,
+          "width": 190,
+          "height": 95,
+          "config": "{\"name\": \"eo_c4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Unique Purchasing Customers\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Unique Purchasing Customers'\"}}}}}]}}}"
+        },
+        {
+          "x": 890,
+          "y": 105,
+          "width": 185,
+          "height": 95,
+          "config": "{\"name\": \"eo_c5\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.On-Time Delivery Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'On-Time Delivery Rate %'\"}}}}}]}}}"
+        },
+        {
+          "x": 1085,
+          "y": 105,
+          "width": 175,
+          "height": 95,
+          "config": "{\"name\": \"eo_c6\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Mean Review Score\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Mean Review Score'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 215,
+          "width": 760,
+          "height": 245,
+          "config": "{\"name\": \"eo_line_trend\", \"singleVisual\": {\"visualType\": \"lineClusteredColumnComboChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.year_month_str\"}], \"ColumnY\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}], \"LineY\": [{\"queryRef\": \"_Measures.Delivered Orders\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Monthly Delivered Merchandise Value (BRL) & Orders'\"}}}}}]}}}"
+        },
+        {
+          "x": 795,
+          "y": 215,
+          "width": 465,
+          "height": 245,
+          "config": "{\"name\": \"eo_donut_status\", \"singleVisual\": {\"visualType\": \"donutChart\", \"projections\": {\"Category\": [{\"queryRef\": \"fact_orders.order_status\"}], \"Y\": [{\"queryRef\": \"_Measures.Total Placed Orders\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Order Status Distribution'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 475,
+          "width": 610,
+          "height": 230,
+          "config": "{\"name\": \"eo_bar_region\", \"singleVisual\": {\"visualType\": \"barChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_geography.region\"}], \"Y\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivered Merchandise Value by Macro-Region'\"}}}}}]}}}"
+        },
+        {
+          "x": 645,
+          "y": 475,
+          "width": 615,
+          "height": 230,
+          "config": "{\"name\": \"eo_bar_cat\", \"singleVisual\": {\"visualType\": \"barChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_product.product_category_name_english\"}], \"Y\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Top Product Categories (Delivered BRL)'\"}}}}}]}}}"
         }
       ]
     },
@@ -62,40 +118,69 @@
       "visualContainers": [
         {
           "x": 20,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"sales_product_card_1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}}}"
+          "y": 15,
+          "width": 320,
+          "height": 75,
+          "config": "{\"name\": \"sp_sl_cat\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_product.product_category_name_english\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Product Category'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"sales_product_card_2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Item Volume\"}]}}}"
+          "x": 355,
+          "y": 15,
+          "width": 280,
+          "height": 75,
+          "config": "{\"name\": \"sp_sl_pay\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_payment_type.payment_group\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Payment Group'\"}}}}}]}}}"
         },
         {
-          "x": 630,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"sales_product_card_3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Average Item Price (BRL)\"}]}}}"
+          "x": 650,
+          "y": 15,
+          "width": 200,
+          "height": 80,
+          "config": "{\"name\": \"sp_c1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivered Merchandise Value (BRL)'\"}}}}}]}}}"
         },
         {
-          "x": 935,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"sales_product_card_4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.MoM Merch Growth %\"}]}}}"
+          "x": 860,
+          "y": 15,
+          "width": 190,
+          "height": 80,
+          "config": "{\"name\": \"sp_c2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Item Volume\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivered Item Volume'\"}}}}}]}}}"
+        },
+        {
+          "x": 1060,
+          "y": 15,
+          "width": 200,
+          "height": 80,
+          "config": "{\"name\": \"sp_c3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Average Item Price (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Average Item Price (BRL)'\"}}}}}]}}}"
         },
         {
           "x": 20,
-          "y": 160,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"sales_product_card_5\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.YoY Merch Growth %\"}]}}}"
+          "y": 110,
+          "width": 620,
+          "height": 310,
+          "config": "{\"name\": \"sp_bar_cat\", \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_product.product_category_name_english\"}], \"Y\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Category Ranking by Delivered Merchandise (BRL)'\"}}}}}]}}}"
+        },
+        {
+          "x": 655,
+          "y": 110,
+          "width": 605,
+          "height": 310,
+          "config": "{\"name\": \"sp_line_growth\", \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.year_month_str\"}], \"Y\": [{\"queryRef\": \"_Measures.MoM Merch Growth %\"}, {\"queryRef\": \"_Measures.YoY Merch Growth %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'MoM & YoY Merchandise Growth (%)'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 435,
+          "width": 460,
+          "height": 270,
+          "config": "{\"name\": \"sp_donut_pay\", \"singleVisual\": {\"visualType\": \"donutChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_payment_type.payment_type\"}], \"Y\": [{\"queryRef\": \"_Measures.Recorded Payment Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Payment Method Value Share'\"}}}}}]}}}"
+        },
+        {
+          "x": 495,
+          "y": 435,
+          "width": 765,
+          "height": 270,
+          "config": "{\"name\": \"sp_matrix_cat\", \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"dim_product.product_category_name_english\"}], \"Values\": [{\"queryRef\": \"_Measures.Delivered Item Volume\"}, {\"queryRef\": \"_Measures.Average Item Price (BRL)\"}, {\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Product Category Performance Matrix'\"}}}}}]}}}"
         }
-      ]
+      ],
+      "filters": "[{\"name\": \"drill_product_category_name_english\", \"type\": \"Categorical\", \"filter\": {\"Where\": []}, \"expression\": {\"Column\": {\"Expression\": {\"SourceRef\": {\"Entity\": \"dim_product\"}}, \"Property\": \"product_category_name_english\"}}, \"isHiddenInViewMode\": false, \"howCreated\": 3}]"
     },
     {
       "name": "customer_intel",
@@ -106,31 +191,59 @@
       "visualContainers": [
         {
           "x": 20,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"customer_intel_card_1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Unique Purchasing Customers\"}]}}}"
+          "y": 15,
+          "width": 340,
+          "height": 75,
+          "config": "{\"name\": \"ci_sl_seg\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"customer_rfm_segments.rfm_segment\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'RFM Segment'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"customer_intel_card_2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Repeat Customers\"}]}}}"
+          "x": 375,
+          "y": 15,
+          "width": 215,
+          "height": 80,
+          "config": "{\"name\": \"ci_c1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Unique Purchasing Customers\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Unique Purchasing Customers'\"}}}}}]}}}"
         },
         {
-          "x": 630,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"customer_intel_card_3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Repeat Purchase Rate %\"}]}}}"
+          "x": 600,
+          "y": 15,
+          "width": 210,
+          "height": 80,
+          "config": "{\"name\": \"ci_c2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Repeat Customers\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Repeat Customers'\"}}}}}]}}}"
         },
         {
-          "x": 935,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"customer_intel_card_4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Customer Observed Spend (BRL)\"}]}}}"
+          "x": 820,
+          "y": 15,
+          "width": 215,
+          "height": 80,
+          "config": "{\"name\": \"ci_c3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Repeat Purchase Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Repeat Purchase Rate %'\"}}}}}]}}}"
+        },
+        {
+          "x": 1045,
+          "y": 15,
+          "width": 215,
+          "height": 80,
+          "config": "{\"name\": \"ci_c4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Customer Observed Spend (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Customer Observed Spend (BRL)'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 110,
+          "width": 615,
+          "height": 290,
+          "config": "{\"name\": \"ci_bar_rfm\", \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"customer_rfm_segments.rfm_segment\"}], \"Y\": [{\"queryRef\": \"customer_rfm_segments.monetary_brl\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Observed Value by RFM Segment (BRL)'\"}}}}}]}}}"
+        },
+        {
+          "x": 650,
+          "y": 110,
+          "width": 610,
+          "height": 290,
+          "config": "{\"name\": \"ci_donut_rep\", \"singleVisual\": {\"visualType\": \"donutChart\", \"projections\": {\"Category\": [{\"queryRef\": \"customer_rfm_segments.is_repeat\"}], \"Y\": [{\"queryRef\": \"customer_rfm_segments.customer_unique_id\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'One-Time vs. Repeat Customer Share'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 415,
+          "width": 1240,
+          "height": 290,
+          "config": "{\"name\": \"ci_matrix_rfm\", \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"customer_rfm_segments.rfm_segment\"}], \"Values\": [{\"queryRef\": \"customer_rfm_segments.customer_unique_id\"}, {\"queryRef\": \"customer_rfm_segments.recency_days\"}, {\"queryRef\": \"customer_rfm_segments.frequency\"}, {\"queryRef\": \"customer_rfm_segments.monetary_brl\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'RFM Segment Scorecard (Persistent customer_unique_id)'\"}}}}}]}}}"
         }
       ]
     },
@@ -143,33 +256,62 @@
       "visualContainers": [
         {
           "x": 20,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"seller_intel_card_1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}}}"
+          "y": 15,
+          "width": 260,
+          "height": 75,
+          "config": "{\"name\": \"si_sl_state\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_seller.seller_state\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Seller State'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"seller_intel_card_2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Orders\"}]}}}"
+          "x": 295,
+          "y": 15,
+          "width": 240,
+          "height": 80,
+          "config": "{\"name\": \"si_c1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivered Merchandise Value (BRL)'\"}}}}}]}}}"
         },
         {
-          "x": 630,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"seller_intel_card_3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Late Delivery Rate %\"}]}}}"
+          "x": 545,
+          "y": 15,
+          "width": 225,
+          "height": 80,
+          "config": "{\"name\": \"si_c2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Orders\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivered Orders'\"}}}}}]}}}"
         },
         {
-          "x": 935,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"seller_intel_card_4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Unsuccessful Order Rate %\"}]}}}"
+          "x": 780,
+          "y": 15,
+          "width": 235,
+          "height": 80,
+          "config": "{\"name\": \"si_c3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Late Delivery Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Late Delivery Rate %'\"}}}}}]}}}"
+        },
+        {
+          "x": 1025,
+          "y": 15,
+          "width": 235,
+          "height": 80,
+          "config": "{\"name\": \"si_c4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Unsuccessful Order Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Unsuccessful Order Rate %'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 110,
+          "width": 620,
+          "height": 300,
+          "config": "{\"name\": \"si_scatter\", \"singleVisual\": {\"visualType\": \"scatterChart\", \"projections\": {\"Details\": [{\"queryRef\": \"dim_seller.seller_id\"}], \"X\": [{\"queryRef\": \"_Measures.Delivered Orders\"}], \"Y\": [{\"queryRef\": \"_Measures.Late Delivery Rate %\"}], \"Size\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Seller Volume vs. Late Delivery Exposure'\"}}}}}]}}}"
+        },
+        {
+          "x": 655,
+          "y": 110,
+          "width": 605,
+          "height": 300,
+          "config": "{\"name\": \"si_bar_state\", \"singleVisual\": {\"visualType\": \"barChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_seller.seller_state\"}], \"Y\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Seller Contribution by Origin State'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 425,
+          "width": 1240,
+          "height": 280,
+          "config": "{\"name\": \"si_matrix_seller\", \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"dim_seller.seller_id\"}], \"Values\": [{\"queryRef\": \"_Measures.Delivered Orders\"}, {\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}, {\"queryRef\": \"_Measures.Late Delivery Rate %\"}, {\"queryRef\": \"_Measures.Mean Review Score\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Seller Scorecard Table (Drill-Through Enabled)'\"}}}}}]}}}"
         }
-      ]
+      ],
+      "filters": "[{\"name\": \"drill_seller_id\", \"type\": \"Categorical\", \"filter\": {\"Where\": []}, \"expression\": {\"Column\": {\"Expression\": {\"SourceRef\": {\"Entity\": \"dim_seller\"}}, \"Property\": \"seller_id\"}}, \"isHiddenInViewMode\": false, \"howCreated\": 3}]"
     },
     {
       "name": "logistics_delivery",
@@ -180,31 +322,59 @@
       "visualContainers": [
         {
           "x": 20,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"logistics_delivery_card_1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.On-Time Delivery Rate %\"}]}}}"
+          "y": 15,
+          "width": 280,
+          "height": 75,
+          "config": "{\"name\": \"ld_sl_perf\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"fact_orders.delivery_performance\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivery Performance'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"logistics_delivery_card_2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Late Delivery Rate %\"}]}}}"
+          "x": 315,
+          "y": 15,
+          "width": 230,
+          "height": 80,
+          "config": "{\"name\": \"ld_c1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.On-Time Delivery Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'On-Time Delivery Rate %'\"}}}}}]}}}"
         },
         {
-          "x": 630,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"logistics_delivery_card_3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Mean Delivery Duration (Days)\"}]}}}"
+          "x": 555,
+          "y": 15,
+          "width": 230,
+          "height": 80,
+          "config": "{\"name\": \"ld_c2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Late Delivery Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Late Delivery Rate %'\"}}}}}]}}}"
         },
         {
-          "x": 935,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"logistics_delivery_card_4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Freight to Merchandise Ratio %\"}]}}}"
+          "x": 795,
+          "y": 15,
+          "width": 230,
+          "height": 80,
+          "config": "{\"name\": \"ld_c3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Mean Delivery Duration (Days)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Mean Delivery Duration (Days)'\"}}}}}]}}}"
+        },
+        {
+          "x": 1035,
+          "y": 15,
+          "width": 225,
+          "height": 80,
+          "config": "{\"name\": \"ld_c4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Freight to Merchandise Ratio %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Freight to Merchandise Ratio %'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 110,
+          "width": 430,
+          "height": 280,
+          "config": "{\"name\": \"ld_donut\", \"singleVisual\": {\"visualType\": \"donutChart\", \"projections\": {\"Category\": [{\"queryRef\": \"fact_orders.delivery_performance\"}], \"Y\": [{\"queryRef\": \"_Measures.Eligible Delivery SLA Orders\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Early / On-Time / Late Distribution'\"}}}}}]}}}"
+        },
+        {
+          "x": 465,
+          "y": 110,
+          "width": 795,
+          "height": 280,
+          "config": "{\"name\": \"ld_line_sla\", \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.year_month_str\"}], \"Y\": [{\"queryRef\": \"_Measures.On-Time Delivery Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Monthly On-Time Delivery Rate (%)'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 405,
+          "width": 1240,
+          "height": 300,
+          "config": "{\"name\": \"ld_bar_state\", \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_geography.state\"}], \"Y\": [{\"queryRef\": \"_Measures.Mean Delivery Duration (Days)\"}, {\"queryRef\": \"_Measures.Freight to Merchandise Ratio %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivery Duration & Freight Ratio by State'\"}}}}}]}}}"
         }
       ]
     },
@@ -217,31 +387,59 @@
       "visualContainers": [
         {
           "x": 20,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"cust_satisfaction_card_1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Total Reviews\"}]}}}"
+          "y": 15,
+          "width": 280,
+          "height": 75,
+          "config": "{\"name\": \"cs_sl_cls\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"fact_reviews.rating_classification\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Rating Class'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"cust_satisfaction_card_2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Mean Review Score\"}]}}}"
+          "x": 315,
+          "y": 15,
+          "width": 225,
+          "height": 80,
+          "config": "{\"name\": \"cs_c1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Total Reviews\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Total Reviews'\"}}}}}]}}}"
         },
         {
-          "x": 630,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"cust_satisfaction_card_3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Positive Review Rate %\"}]}}}"
+          "x": 550,
+          "y": 15,
+          "width": 225,
+          "height": 80,
+          "config": "{\"name\": \"cs_c2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Mean Review Score\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Mean Review Score'\"}}}}}]}}}"
         },
         {
-          "x": 935,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"cust_satisfaction_card_4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Negative Review Rate %\"}]}}}"
+          "x": 785,
+          "y": 15,
+          "width": 235,
+          "height": 80,
+          "config": "{\"name\": \"cs_c3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Positive Review Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Positive Review Rate %'\"}}}}}]}}}"
+        },
+        {
+          "x": 1030,
+          "y": 15,
+          "width": 230,
+          "height": 80,
+          "config": "{\"name\": \"cs_c4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Negative Review Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Negative Review Rate %'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 110,
+          "width": 580,
+          "height": 290,
+          "config": "{\"name\": \"cs_bar_score\", \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"fact_reviews.review_score\"}], \"Y\": [{\"queryRef\": \"_Measures.Total Reviews\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Review Score (1-5) Distribution'\"}}}}}]}}}"
+        },
+        {
+          "x": 615,
+          "y": 110,
+          "width": 645,
+          "height": 290,
+          "config": "{\"name\": \"cs_bar_sla\", \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"fact_orders.delivery_performance\"}], \"Y\": [{\"queryRef\": \"_Measures.Mean Review Score\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Mean Review Score by Delivery SLA Outcome'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 415,
+          "width": 1240,
+          "height": 290,
+          "config": "{\"name\": \"cs_line_trend\", \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.year_month_str\"}], \"Y\": [{\"queryRef\": \"_Measures.Mean Review Score\"}, {\"queryRef\": \"_Measures.Negative Review Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Monthly Review Score & Negative Rating Trend'\"}}}}}]}}}"
         }
       ]
     },
@@ -254,31 +452,59 @@
       "visualContainers": [
         {
           "x": 20,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"marketing_intel_card_1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Qualified Leads (MQL)\"}]}}}"
+          "y": 15,
+          "width": 280,
+          "height": 75,
+          "config": "{\"name\": \"mi_sl_grp\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_marketing_channel.channel_group\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Channel Group'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"marketing_intel_card_2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Converted Closed Deals\"}]}}}"
+          "x": 315,
+          "y": 15,
+          "width": 225,
+          "height": 80,
+          "config": "{\"name\": \"mi_c1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Qualified Leads (MQL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Qualified Leads (MQL)'\"}}}}}]}}}"
         },
         {
-          "x": 630,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"marketing_intel_card_3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Lead Conversion Rate %\"}]}}}"
+          "x": 550,
+          "y": 15,
+          "width": 225,
+          "height": 80,
+          "config": "{\"name\": \"mi_c2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Converted Closed Deals\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Converted Closed Deals'\"}}}}}]}}}"
         },
         {
-          "x": 935,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"marketing_intel_card_4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Mean Sales Cycle (Days)\"}]}}}"
+          "x": 785,
+          "y": 15,
+          "width": 235,
+          "height": 80,
+          "config": "{\"name\": \"mi_c3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Lead Conversion Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Lead Conversion Rate %'\"}}}}}]}}}"
+        },
+        {
+          "x": 1030,
+          "y": 15,
+          "width": 230,
+          "height": 80,
+          "config": "{\"name\": \"mi_c4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Mean Sales Cycle (Days)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Mean Sales Cycle (Days)'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 110,
+          "width": 500,
+          "height": 290,
+          "config": "{\"name\": \"mi_funnel\", \"singleVisual\": {\"visualType\": \"funnel\", \"projections\": {\"Category\": [{\"queryRef\": \"fact_marketing_funnel.has_closed_deal\"}], \"Y\": [{\"queryRef\": \"_Measures.Qualified Leads (MQL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Seller Acquisition Funnel'\"}}}}}]}}}"
+        },
+        {
+          "x": 535,
+          "y": 110,
+          "width": 725,
+          "height": 290,
+          "config": "{\"name\": \"mi_bar_orig\", \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_marketing_channel.origin\"}], \"Y\": [{\"queryRef\": \"_Measures.Qualified Leads (MQL)\"}, {\"queryRef\": \"_Measures.Converted Closed Deals\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'MQLs & Closed Deals by Origin Channel'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 415,
+          "width": 1240,
+          "height": 290,
+          "config": "{\"name\": \"mi_matrix_seg\", \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"dim_marketing_channel.origin\"}], \"Values\": [{\"queryRef\": \"_Measures.Qualified Leads (MQL)\"}, {\"queryRef\": \"_Measures.Converted Closed Deals\"}, {\"queryRef\": \"_Measures.Lead Conversion Rate %\"}, {\"queryRef\": \"_Measures.Mean Sales Cycle (Days)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Channel Conversion & Sales Cycle Matrix'\"}}}}}]}}}"
         }
       ]
     },
@@ -291,31 +517,59 @@
       "visualContainers": [
         {
           "x": 20,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"geo_intel_card_1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}}}"
+          "y": 15,
+          "width": 280,
+          "height": 75,
+          "config": "{\"name\": \"gi_sl_reg\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_geography.region\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Macro-Region'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"geo_intel_card_2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Freight Value (BRL)\"}]}}}"
+          "x": 315,
+          "y": 15,
+          "width": 240,
+          "height": 80,
+          "config": "{\"name\": \"gi_c1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivered Merchandise Value (BRL)'\"}}}}}]}}}"
         },
         {
-          "x": 630,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"geo_intel_card_3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Freight to Merchandise Ratio %\"}]}}}"
+          "x": 565,
+          "y": 15,
+          "width": 230,
+          "height": 80,
+          "config": "{\"name\": \"gi_c2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Freight Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivered Freight Value (BRL)'\"}}}}}]}}}"
         },
         {
-          "x": 935,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"geo_intel_card_4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.On-Time Delivery Rate %\"}]}}}"
+          "x": 805,
+          "y": 15,
+          "width": 225,
+          "height": 80,
+          "config": "{\"name\": \"gi_c3\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Freight to Merchandise Ratio %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Freight to Merchandise Ratio %'\"}}}}}]}}}"
+        },
+        {
+          "x": 1040,
+          "y": 15,
+          "width": 220,
+          "height": 80,
+          "config": "{\"name\": \"gi_c4\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.On-Time Delivery Rate %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'On-Time Delivery Rate %'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 110,
+          "width": 620,
+          "height": 340,
+          "config": "{\"name\": \"gi_map\", \"singleVisual\": {\"visualType\": \"filledMap\", \"projections\": {\"Location\": [{\"queryRef\": \"dim_geography.state\"}], \"Color\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Brazilian State Merchandise Map'\"}}}}}]}}}"
+        },
+        {
+          "x": 655,
+          "y": 110,
+          "width": 605,
+          "height": 340,
+          "config": "{\"name\": \"gi_bar_freight\", \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_geography.state\"}], \"Y\": [{\"queryRef\": \"_Measures.Freight to Merchandise Ratio %\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Freight-to-Merchandise Ratio (%) by State'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 465,
+          "width": 1240,
+          "height": 240,
+          "config": "{\"name\": \"gi_matrix\", \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"dim_geography.region\"}, {\"queryRef\": \"dim_geography.state\"}], \"Values\": [{\"queryRef\": \"_Measures.Delivered Orders\"}, {\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}, {\"queryRef\": \"_Measures.On-Time Delivery Rate %\"}, {\"queryRef\": \"_Measures.Mean Delivery Duration (Days)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Regional & State Performance Matrix'\"}}}}}]}}}"
         }
       ]
     },
@@ -328,17 +582,52 @@
       "visualContainers": [
         {
           "x": 20,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"predictive_intel_card_1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.High Risk Orders Predicted\"}]}}}"
+          "y": 15,
+          "width": 320,
+          "height": 75,
+          "config": "{\"name\": \"pi_sl_tier\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"delivery_risk_predictions.risk_tier\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Checkout Risk Tier'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 20,
+          "x": 355,
+          "y": 15,
+          "width": 280,
+          "height": 75,
+          "config": "{\"name\": \"pi_sl_tgt\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"forecast_outputs.target\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Forecast Target'\"}}}}}]}}}"
+        },
+        {
+          "x": 650,
+          "y": 15,
           "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"predictive_intel_card_2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}}}"
+          "height": 80,
+          "config": "{\"name\": \"pi_c1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.High Risk Orders Predicted\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'High Risk Orders Predicted'\"}}}}}]}}}"
+        },
+        {
+          "x": 955,
+          "y": 15,
+          "width": 305,
+          "height": 80,
+          "config": "{\"name\": \"pi_c2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Delivered Merchandise Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Delivered Merchandise Value (BRL)'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 110,
+          "width": 720,
+          "height": 300,
+          "config": "{\"name\": \"pi_line_fc\", \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"forecast_outputs.week_start\"}], \"Series\": [{\"queryRef\": \"forecast_outputs.record_type\"}], \"Y\": [{\"queryRef\": \"forecast_outputs.actual_value\"}, {\"queryRef\": \"forecast_outputs.predicted_value\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Weekly Historical Backtest & Illustrative Continuation'\"}}}}}]}}}"
+        },
+        {
+          "x": 755,
+          "y": 110,
+          "width": 505,
+          "height": 300,
+          "config": "{\"name\": \"pi_bar_risk\", \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"delivery_risk_predictions.risk_tier\"}], \"Y\": [{\"queryRef\": \"delivery_risk_predictions.order_id\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Unseen Test Orders by Checkout Risk Tier'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 425,
+          "width": 1240,
+          "height": 280,
+          "config": "{\"name\": \"pi_matrix_risk\", \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"delivery_risk_predictions.customer_region\"}, {\"queryRef\": \"delivery_risk_predictions.risk_tier\"}], \"Values\": [{\"queryRef\": \"delivery_risk_predictions.order_id\"}, {\"queryRef\": \"delivery_risk_predictions.predicted_late_prob\"}, {\"queryRef\": \"delivery_risk_predictions.is_late\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Checkout Delay-Risk Predictions Summary (Jun-Aug 2018 Test)'\"}}}}}]}}}"
         }
       ]
     },
@@ -351,17 +640,45 @@
       "visualContainers": [
         {
           "x": 20,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"decision_intel_card_1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Base Simulated Impact (BRL)\"}]}}}"
+          "y": 15,
+          "width": 320,
+          "height": 75,
+          "config": "{\"name\": \"di_sl_tier\", \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"decision_scenarios.tier\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Scenario Tier (Low/Base/High)'\"}}}}}]}}}"
         },
         {
-          "x": 325,
-          "y": 20,
-          "width": 290,
-          "height": 120,
-          "config": "{\"name\": \"decision_intel_card_2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Recorded Unsuccessful Merch Value (BRL)\"}]}}}"
+          "x": 355,
+          "y": 15,
+          "width": 440,
+          "height": 80,
+          "config": "{\"name\": \"di_c1\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Base Simulated Impact (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Base Simulated Impact (BRL)'\"}}}}}]}}}"
+        },
+        {
+          "x": 810,
+          "y": 15,
+          "width": 450,
+          "height": 80,
+          "config": "{\"name\": \"di_c2\", \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"_Measures.Recorded Unsuccessful Merch Value (BRL)\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Recorded Unsuccessful Merch Value (BRL)'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 110,
+          "width": 720,
+          "height": 310,
+          "config": "{\"name\": \"di_bar_scen\", \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"decision_scenarios.scenario_name\"}], \"Series\": [{\"queryRef\": \"decision_scenarios.tier\"}], \"Y\": [{\"queryRef\": \"decision_scenarios.simulated_gmv_or_savings_brl\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Illustrative Low / Base / High Scenario Impact (BRL)'\"}}}}}]}}}"
+        },
+        {
+          "x": 755,
+          "y": 110,
+          "width": 505,
+          "height": 310,
+          "config": "{\"name\": \"di_bar_net\", \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"decision_scenarios.scenario_name\"}], \"Y\": [{\"queryRef\": \"decision_scenarios.simulated_illustrative_contribution_brl\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Illustrative Contribution Recovery (15% Margin Sensitivity)'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 435,
+          "width": 1240,
+          "height": 270,
+          "config": "{\"name\": \"di_matrix\", \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"decision_scenarios.scenario_name\"}, {\"queryRef\": \"decision_scenarios.tier\"}], \"Values\": [{\"queryRef\": \"decision_scenarios.observed_baseline_value\"}, {\"queryRef\": \"decision_scenarios.simulated_gmv_or_savings_brl\"}, {\"queryRef\": \"decision_scenarios.simulated_illustrative_net_benefit_brl\"}]}, \"vcObjects\": {\"title\": [{\"properties\": {\"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}, \"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Decision Scenario Sensitivity Table (Clearly Labeled Illustrative)'\"}}}}}]}}}"
         }
       ]
     }

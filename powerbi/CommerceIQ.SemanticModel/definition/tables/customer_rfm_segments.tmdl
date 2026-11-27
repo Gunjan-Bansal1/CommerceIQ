@@ -1,0 +1,58 @@
+table customer_rfm_segments
+
+	column customer_unique_id
+		dataType: string
+		sourceColumn: customer_unique_id
+
+	column primary_state
+		dataType: string
+		sourceColumn: primary_state
+
+	column recency_days
+		dataType: int64
+		sourceColumn: recency_days
+
+	column frequency
+		dataType: int64
+		sourceColumn: frequency
+
+	column monetary_brl
+		dataType: double
+		sourceColumn: monetary_brl
+
+	column r_score
+		dataType: int64
+		sourceColumn: r_score
+
+	column f_score
+		dataType: int64
+		sourceColumn: f_score
+
+	column m_score
+		dataType: int64
+		sourceColumn: m_score
+
+	column rfm_segment
+		dataType: string
+		sourceColumn: rfm_segment
+
+	column cluster_id
+		dataType: int64
+		sourceColumn: cluster_id
+
+	column is_repeat
+		dataType: boolean
+		sourceColumn: is_repeat
+
+	column illustrative_15pct_gross_margin_brl
+		dataType: double
+		sourceColumn: illustrative_15pct_gross_margin_brl
+
+	partition customer_rfm_segments = m
+		mode: import
+		source =
+			let
+				Source = Csv.Document(File.Contents("C:\Users\bgunj\Desktop\commerceIQ\data\processed\customer_rfm_segments.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+			in
+				PromotedHeaders

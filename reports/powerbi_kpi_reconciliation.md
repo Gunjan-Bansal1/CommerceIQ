@@ -1,9 +1,9 @@
 # CommerceIQ — Power BI DAX & Semantic Model Reconciliation (Phase 13)
 
 ## 1. Asset Verification
-- `powerbi/CommerceIQ.pbip`: **CREATED**
-- `powerbi/CommerceIQ.SemanticModel/definition/`: **12 Warehouse Tables + `_Measures` (39 explicit DAX measures) + 14 single-direction relationships**
-- `powerbi/CommerceIQ.Report/report.json`: **10 Report Pages** bound to `commerceiq_theme.json`
+- `powerbi/CommerceIQ.pbip`: **VERIFIED**
+- `powerbi/CommerceIQ.SemanticModel/definition/`: **12 MySQL Warehouse Tables + 4 Analytical CSV Tables + `_Measures` (39 explicit DAX measures) + 15 relationships**
+- `powerbi/CommerceIQ.Report/report.json`: **10 Report Pages, 84 Visuals** (cards, line/bar/donut/funnel/scatter/filledMap/matrix/slicers/pageNavigator, drill-through enabled)
 - Native Power BI Desktop GUI Refresh & Screenshot Export: **PENDING INTERACTIVE GUI OPEN** (`PBIDesktopStore.exe` requires interactive user sign-in/refresh).
 
 ## 2. DAX Measure Logic Reconciled Against MySQL Warehouse

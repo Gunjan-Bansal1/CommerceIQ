@@ -183,7 +183,7 @@ table _Measures
 			    AVERAGE ( fact_orders[delivery_duration_days] ),
 			    fact_orders[is_delivered] = 1
 			)
-		formatString: "#,##0"
+		formatString: "0.00"
 
 	measure 'Freight to Merchandise Ratio %' =
 			DIVIDE ( [Delivered Freight Value (BRL)], [Delivered Merchandise Value (BRL)] )
@@ -195,7 +195,7 @@ table _Measures
 
 	measure 'Mean Review Score' =
 			AVERAGE ( fact_reviews[review_score] )
-		formatString: "#,##0"
+		formatString: "0.00"
 
 	measure 'Positive Review Rate %' =
 			DIVIDE (
@@ -231,7 +231,7 @@ table _Measures
 			    AVERAGE ( fact_marketing_funnel[conversion_duration_days] ),
 			    fact_marketing_funnel[is_valid_conversion_duration] = 1
 			)
-		formatString: "#,##0"
+		formatString: "0.00"
 
 	measure 'High Risk Orders Predicted' =
 			CALCULATE (

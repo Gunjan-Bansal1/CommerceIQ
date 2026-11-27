@@ -56,3 +56,7 @@ relationship rel_14_fact_marketing_funnel_dim_seller
 	fromColumn: fact_marketing_funnel.seller_key
 	toColumn: dim_seller.seller_key
 	isActive: false
+
+relationship rel_15_delivery_risk_predictions_fact_orders
+	fromColumn: delivery_risk_predictions.order_id
+	toColumn: fact_orders.order_id
