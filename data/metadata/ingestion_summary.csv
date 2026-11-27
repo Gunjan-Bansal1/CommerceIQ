@@ -1,0 +1,13 @@
+dataset,source,rows,columns,memory_mib,load_time_sec,status,error,ingested_at_utc
+orders,ecommerce,99441,8,53.02,0.372,LOADED,,2026-11-27T06:36:14.508054+00:00
+customers,ecommerce,99441,5,30.95,0.2004,LOADED,,2026-11-27T06:36:14.508054+00:00
+order_items,ecommerce,112650,7,50.41,0.273,LOADED,,2026-11-27T06:36:14.508054+00:00
+payments,ecommerce,103886,5,29.16,0.1598,LOADED,,2026-11-27T06:36:14.508054+00:00
+reviews,ecommerce,99224,7,45.46,0.2557,LOADED,,2026-11-27T06:36:14.508054+00:00
+products,ecommerce,32951,9,15.81,0.0737,LOADED,,2026-11-27T06:36:14.508054+00:00
+sellers,ecommerce,3095,4,0.72,0.0068,LOADED,,2026-11-27T06:36:14.508054+00:00
+geolocation,ecommerce,1000163,5,286.49,1.6247,LOADED,,2026-11-27T06:36:14.508054+00:00
+category_translation,ecommerce,71,2,0.01,0.003,LOADED,,2026-11-27T06:36:14.508054+00:00
+marketing_leads,marketing,8000,4,2.14,0.0132,LOADED,,2026-11-27T06:36:14.508054+00:00
+closed_deals,marketing,842,14,0.7,0.0076,LOADED,,2026-11-27T06:36:14.508054+00:00
+brazil_holidays,external,42,11,0.03,0.0039,LOADED,,2026-11-27T06:36:14.508054+00:00
