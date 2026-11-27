@@ -1,0 +1,64 @@
+table dim_seller
+
+	column seller_key
+		dataType: int64
+		isHidden
+		sourceColumn: seller_key
+
+	column seller_id
+		dataType: string
+		sourceColumn: seller_id
+
+	column seller_zip_code_prefix
+		dataType: string
+		sourceColumn: seller_zip_code_prefix
+
+	column seller_city
+		dataType: string
+		sourceColumn: seller_city
+
+	column seller_state
+		dataType: string
+		sourceColumn: seller_state
+
+	column seller_region
+		dataType: string
+		sourceColumn: seller_region
+
+	column geo_key
+		dataType: int64
+		isHidden
+		sourceColumn: geo_key
+
+	column has_geolocation_match
+		dataType: int64
+		sourceColumn: has_geolocation_match
+
+	column has_recorded_marketing_deal
+		dataType: int64
+		sourceColumn: has_recorded_marketing_deal
+
+	column marketing_origin
+		dataType: string
+		sourceColumn: marketing_origin
+
+	column business_segment
+		dataType: string
+		sourceColumn: business_segment
+
+	column lead_type
+		dataType: string
+		sourceColumn: lead_type
+
+	column business_type
+		dataType: string
+		sourceColumn: business_type
+
+	partition dim_seller = m
+		mode: import
+		source =
+			let
+				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+				Data = Source{[Schema="commerceiq", Item="dim_seller"]}[Data]
+			in
+				Data

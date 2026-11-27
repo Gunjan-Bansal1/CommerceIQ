@@ -1,0 +1,51 @@
+table dim_geography
+
+	column geo_key
+		dataType: int64
+		isHidden
+		sourceColumn: geo_key
+
+	column zip_code_prefix
+		dataType: string
+		sourceColumn: zip_code_prefix
+
+	column city
+		dataType: string
+		sourceColumn: city
+
+	column state
+		dataType: string
+		sourceColumn: state
+
+	column region
+		dataType: string
+		sourceColumn: region
+
+	column latitude
+		dataType: double
+		sourceColumn: latitude
+
+	column longitude
+		dataType: double
+		sourceColumn: longitude
+
+	column is_ambiguous_zip
+		dataType: int64
+		sourceColumn: is_ambiguous_zip
+
+	column dominant_location_pct
+		dataType: double
+		sourceColumn: dominant_location_pct
+
+	column has_geolocation_match
+		dataType: int64
+		sourceColumn: has_geolocation_match
+
+	partition dim_geography = m
+		mode: import
+		source =
+			let
+				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+				Data = Source{[Schema="commerceiq", Item="dim_geography"]}[Data]
+			in
+				Data

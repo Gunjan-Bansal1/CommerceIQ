@@ -1,0 +1,42 @@
+{
+  "name": "CommerceIQ Theme",
+  "dataColors": [
+    "#17365D",
+    "#2B6CB0",
+    "#008080",
+    "#DD6B20",
+    "#2F855A",
+    "#C53030",
+    "#805AD5",
+    "#718096"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#1A202C",
+  "tableAccent": "#17365D",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "title": [
+          {
+            "fontColor": { "solid": { "color": "#17365D" } },
+            "fontSize": 12,
+            "fontFamily": "Segoe UI Semibold"
+          }
+        ],
+        "background": [
+          {
+            "color": { "solid": { "color": "#FFFFFF" } },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": { "solid": { "color": "#E2E8F0" } },
+            "radius": 6
+          }
+        ]
+      }
+    }
+  }
+}

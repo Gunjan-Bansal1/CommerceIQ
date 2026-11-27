@@ -1,0 +1,58 @@
+relationship rel_01_fact_orders_dim_customer
+	fromColumn: fact_orders.customer_key
+	toColumn: dim_customer.customer_key
+
+relationship rel_02_fact_orders_dim_geography
+	fromColumn: fact_orders.customer_geo_key
+	toColumn: dim_geography.geo_key
+
+relationship rel_03_fact_orders_dim_date
+	fromColumn: fact_orders.purchase_date_key
+	toColumn: dim_date.date_key
+
+relationship rel_04_fact_orders_dim_date
+	fromColumn: fact_orders.delivered_date_key
+	toColumn: dim_date.date_key
+	isActive: false
+
+relationship rel_05_fact_orders_dim_date
+	fromColumn: fact_orders.estimated_date_key
+	toColumn: dim_date.date_key
+	isActive: false
+
+relationship rel_06_fact_order_items_fact_orders
+	fromColumn: fact_order_items.order_key
+	toColumn: fact_orders.order_key
+
+relationship rel_07_fact_order_items_dim_product
+	fromColumn: fact_order_items.product_key
+	toColumn: dim_product.product_key
+
+relationship rel_08_fact_order_items_dim_seller
+	fromColumn: fact_order_items.seller_key
+	toColumn: dim_seller.seller_key
+
+relationship rel_09_fact_payments_fact_orders
+	fromColumn: fact_payments.order_key
+	toColumn: fact_orders.order_key
+
+relationship rel_10_fact_payments_dim_payment_type
+	fromColumn: fact_payments.payment_type_key
+	toColumn: dim_payment_type.payment_type_key
+
+relationship rel_11_fact_reviews_fact_orders
+	fromColumn: fact_reviews.order_key
+	toColumn: fact_orders.order_key
+
+relationship rel_12_fact_marketing_funnel_dim_marketing_channel
+	fromColumn: fact_marketing_funnel.channel_key
+	toColumn: dim_marketing_channel.channel_key
+
+relationship rel_13_fact_marketing_funnel_dim_date
+	fromColumn: fact_marketing_funnel.first_contact_date_key
+	toColumn: dim_date.date_key
+
+relationship rel_14_fact_marketing_funnel_dim_seller
+	fromColumn: fact_marketing_funnel.seller_key
+	toColumn: dim_seller.seller_key
+	isActive: false

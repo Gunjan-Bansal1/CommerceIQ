@@ -1,0 +1,18 @@
+flowchart TB
+    subgraph ML_Forecast["Model A: Weekly Demand Forecasting"]
+        F1["Core Weeks (2017-01-02..2018-08-26)\n86 Complete Weeks"] --> F2["Chronological Split (74 Train / 12 Test)\n+ 4-Fold Expanding CV"]
+        F2 --> F3["Baselines vs Holt-Winters / ARIMA / Ridge"]
+        F3 --> F4["data/processed/forecast_outputs.csv"]
+    end
+
+    subgraph ML_Risk["Model B: Checkout Delay Risk Classifier"]
+        R1["Eligible Delivered Orders (96,470)\nTarget: delivery_deviation_days > 0"] --> R2["Checkout-Only Features +\nEvent-Time Prior Seller Late Rate"]
+        R2 --> R3["Temporal Split: Train (<2018-03) |\nVal (2018-03..05) | Test (>=2018-06)"]
+        R3 --> R4["HistGradientBoosting (ROC-AUC 0.7325)\ndata/processed/delivery_risk_predictions.csv"]
+    end
+
+    subgraph BI_Layer["BI & Decision Support Layer"]
+        F4 & R4 --> PBI["Power BI PBIP + TMDL\n39 DAX Measures | 10 Pages"]
+        XLS["Excel COM Workbook\nTables, XLOOKUP, Pivot, Slicers"] --> PBI
+        DEC["Decision Simulator\nLow / Base / High Scenarios"] --> PBI
+    end

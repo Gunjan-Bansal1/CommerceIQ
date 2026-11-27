@@ -1,0 +1,68 @@
+table fact_payments
+
+	column payment_sk
+		dataType: int64
+		isHidden
+		sourceColumn: payment_sk
+
+	column order_id
+		dataType: string
+		sourceColumn: order_id
+
+	column payment_sequential
+		dataType: int64
+		sourceColumn: payment_sequential
+
+	column order_key
+		dataType: int64
+		isHidden
+		sourceColumn: order_key
+
+	column customer_key
+		dataType: int64
+		isHidden
+		sourceColumn: customer_key
+
+	column payment_type_key
+		dataType: int64
+		isHidden
+		sourceColumn: payment_type_key
+
+	column purchase_date_key
+		dataType: int64
+		isHidden
+		sourceColumn: purchase_date_key
+
+	column order_status
+		dataType: string
+		sourceColumn: order_status
+
+	column payment_installments
+		dataType: int64
+		sourceColumn: payment_installments
+
+	column payment_value
+		dataType: decimal
+		formatString: "#,##0.00"
+		sourceColumn: payment_value
+
+	column is_zero_installment
+		dataType: int64
+		sourceColumn: is_zero_installment
+
+	column is_zero_payment
+		dataType: int64
+		sourceColumn: is_zero_payment
+
+	column is_multi_payment_order
+		dataType: int64
+		sourceColumn: is_multi_payment_order
+
+	partition fact_payments = m
+		mode: import
+		source =
+			let
+				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+				Data = Source{[Schema="commerceiq", Item="fact_payments"]}[Data]
+			in
+				Data

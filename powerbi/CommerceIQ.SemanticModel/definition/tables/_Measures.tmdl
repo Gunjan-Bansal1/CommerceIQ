@@ -1,0 +1,252 @@
+table _Measures
+
+	measure 'Total Placed Orders' =
+			DISTINCTCOUNT ( fact_orders[order_id] )
+		formatString: "#,##0"
+
+	measure 'Delivered Orders' =
+			CALCULATE (
+			    DISTINCTCOUNT ( fact_orders[order_id] ),
+			    fact_orders[is_delivered] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'Eligible Delivered Orders' =
+			CALCULATE (
+			    DISTINCTCOUNT ( fact_orders[order_id] ),
+			    fact_orders[is_delivered] = 1,
+			    fact_orders[has_order_items] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'Delivered Merchandise Value (BRL)' =
+			CALCULATE (
+			    SUM ( fact_orders[merchandise_value] ),
+			    fact_orders[is_delivered] = 1,
+			    fact_orders[has_order_items] = 1
+			)
+		formatString: "#,##0.00"
+
+	measure 'Recorded GMV All Statuses (BRL)' =
+			SUM ( fact_orders[merchandise_value] )
+		formatString: "#,##0.00"
+
+	measure 'Delivered Freight Value (BRL)' =
+			CALCULATE (
+			    SUM ( fact_orders[freight_value] ),
+			    fact_orders[is_delivered] = 1,
+			    fact_orders[has_order_items] = 1
+			)
+		formatString: "#,##0.00"
+
+	measure 'Recorded Payment Value (BRL)' =
+			SUM ( fact_orders[total_payment_value] )
+		formatString: "#,##0.00"
+
+	measure 'Average Delivered Order Value (BRL)' =
+			DIVIDE ( [Delivered Merchandise Value (BRL)], [Eligible Delivered Orders] )
+		formatString: "#,##0.00"
+
+	measure 'Delivered Item Volume' =
+			CALCULATE (
+			    COUNTROWS ( fact_order_items ),
+			    fact_order_items[is_delivered] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'Average Item Price (BRL)' =
+			DIVIDE (
+			    CALCULATE ( SUM ( fact_order_items[price] ), fact_order_items[is_delivered] = 1 ),
+			    [Delivered Item Volume]
+			)
+		formatString: "#,##0.00"
+
+	measure 'Prior Month Delivered Merch (BRL)' =
+			CALCULATE (
+			    [Delivered Merchandise Value (BRL)],
+			    DATEADD ( dim_date[full_date], -1, MONTH )
+			)
+		formatString: "#,##0.00"
+
+	measure 'MoM Merch Growth %' =
+			VAR CurrentMerch = [Delivered Merchandise Value (BRL)]
+			VAR PriorMerch = [Prior Month Delivered Merch (BRL)]
+			RETURN
+			    DIVIDE ( CurrentMerch - PriorMerch, PriorMerch )
+		formatString: 0.00%
+
+	measure 'Prior Year Delivered Merch (BRL)' =
+			CALCULATE (
+			    [Delivered Merchandise Value (BRL)],
+			    SAMEPERIODLASTYEAR ( dim_date[full_date] )
+			)
+		formatString: "#,##0.00"
+
+	measure 'YoY Merch Growth %' =
+			VAR CurrentMerch = [Delivered Merchandise Value (BRL)]
+			VAR PriorYrMerch = [Prior Year Delivered Merch (BRL)]
+			RETURN
+			    DIVIDE ( CurrentMerch - PriorYrMerch, PriorYrMerch )
+		formatString: 0.00%
+
+	measure 'YTD Delivered Merch (BRL)' =
+			CALCULATE (
+			    [Delivered Merchandise Value (BRL)],
+			    DATESYTD ( dim_date[full_date] )
+			)
+		formatString: "#,##0.00"
+
+	measure 'Unsuccessful Orders' =
+			CALCULATE (
+			    DISTINCTCOUNT ( fact_orders[order_id] ),
+			    fact_orders[is_unsuccessful] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'Unsuccessful Order Rate %' =
+			DIVIDE ( [Unsuccessful Orders], [Total Placed Orders] )
+		formatString: 0.00%
+
+	measure 'Recorded Unsuccessful Merch Value (BRL)' =
+			CALCULATE (
+			    SUM ( fact_orders[merchandise_value] ),
+			    fact_orders[is_unsuccessful] = 1,
+			    fact_orders[has_order_items] = 1
+			)
+		formatString: "#,##0.00"
+
+	measure 'Unique Purchasing Customers' =
+			CALCULATE (
+			    DISTINCTCOUNT ( dim_customer[customer_unique_id] ),
+			    FILTER (
+			        VALUES ( fact_orders[order_id] ),
+			        CALCULATE ( MAX ( fact_orders[is_delivered] ) ) = 1
+			    )
+			)
+		formatString: "#,##0"
+
+	measure 'Repeat Customers' =
+			COUNTROWS (
+			    FILTER (
+			        SUMMARIZE (
+			            CALCULATETABLE ( fact_orders, fact_orders[is_delivered] = 1, fact_orders[has_order_items] = 1 ),
+			            dim_customer[customer_unique_id],
+			            "OrderCnt", DISTINCTCOUNT ( fact_orders[order_id] )
+			        ),
+			        [OrderCnt] >= 2
+			    )
+			)
+		formatString: "#,##0"
+
+	measure 'Repeat Purchase Rate %' =
+			DIVIDE ( [Repeat Customers], [Unique Purchasing Customers] )
+		formatString: 0.00%
+
+	measure 'Customer Observed Spend (BRL)' =
+			AVERAGEX (
+			    VALUES ( dim_customer[customer_unique_id] ),
+			    [Delivered Merchandise Value (BRL)]
+			)
+		formatString: "#,##0.00"
+
+	measure 'Eligible Delivery SLA Orders' =
+			CALCULATE (
+			    COUNTROWS ( fact_orders ),
+			    fact_orders[is_valid_delivery_promise_comparison] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'On-Time Deliveries' =
+			CALCULATE (
+			    COUNTROWS ( fact_orders ),
+			    fact_orders[is_on_time_delivery] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'On-Time Delivery Rate %' =
+			DIVIDE ( [On-Time Deliveries], [Eligible Delivery SLA Orders] )
+		formatString: 0.00%
+
+	measure 'Late Deliveries' =
+			CALCULATE (
+			    COUNTROWS ( fact_orders ),
+			    fact_orders[delivery_performance] = "late"
+			)
+		formatString: "#,##0"
+
+	measure 'Late Delivery Rate %' =
+			DIVIDE ( [Late Deliveries], [Eligible Delivery SLA Orders] )
+		formatString: 0.00%
+
+	measure 'Mean Delivery Duration (Days)' =
+			CALCULATE (
+			    AVERAGE ( fact_orders[delivery_duration_days] ),
+			    fact_orders[is_delivered] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'Freight to Merchandise Ratio %' =
+			DIVIDE ( [Delivered Freight Value (BRL)], [Delivered Merchandise Value (BRL)] )
+		formatString: 0.00%
+
+	measure 'Total Reviews' =
+			COUNTROWS ( fact_reviews )
+		formatString: "#,##0"
+
+	measure 'Mean Review Score' =
+			AVERAGE ( fact_reviews[review_score] )
+		formatString: "#,##0"
+
+	measure 'Positive Review Rate %' =
+			DIVIDE (
+			    CALCULATE ( COUNTROWS ( fact_reviews ), fact_reviews[rating_classification] = "positive" ),
+			    [Total Reviews]
+			)
+		formatString: 0.00%
+
+	measure 'Negative Review Rate %' =
+			DIVIDE (
+			    CALCULATE ( COUNTROWS ( fact_reviews ), fact_reviews[rating_classification] = "negative" ),
+			    [Total Reviews]
+			)
+		formatString: 0.00%
+
+	measure 'Qualified Leads (MQL)' =
+			DISTINCTCOUNT ( fact_marketing_funnel[mql_id] )
+		formatString: "#,##0"
+
+	measure 'Converted Closed Deals' =
+			CALCULATE (
+			    DISTINCTCOUNT ( fact_marketing_funnel[mql_id] ),
+			    fact_marketing_funnel[has_closed_deal] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'Lead Conversion Rate %' =
+			DIVIDE ( [Converted Closed Deals], [Qualified Leads (MQL)] )
+		formatString: 0.00%
+
+	measure 'Mean Sales Cycle (Days)' =
+			CALCULATE (
+			    AVERAGE ( fact_marketing_funnel[conversion_duration_days] ),
+			    fact_marketing_funnel[is_valid_conversion_duration] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'High Risk Orders Predicted' =
+			CALCULATE (
+			    COUNTROWS ( delivery_risk_predictions ),
+			    delivery_risk_predictions[predicted_high_risk_flag] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'Base Simulated Impact (BRL)' =
+			CALCULATE (
+			    SUM ( decision_scenarios[simulated_gmv_or_savings_brl] ),
+			    decision_scenarios[tier] = SELECTEDVALUE ( decision_scenarios[tier], "Base" )
+			)
+		formatString: "#,##0.00"
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW("Placeholder", 1)

@@ -1,0 +1,27 @@
+table dim_payment_type
+
+	column payment_type_key
+		dataType: int64
+		isHidden
+		sourceColumn: payment_type_key
+
+	column payment_type
+		dataType: string
+		sourceColumn: payment_type
+
+	column payment_group
+		dataType: string
+		sourceColumn: payment_group
+
+	column is_defined_payment_type
+		dataType: int64
+		sourceColumn: is_defined_payment_type
+
+	partition dim_payment_type = m
+		mode: import
+		source =
+			let
+				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+				Data = Source{[Schema="commerceiq", Item="dim_payment_type"]}[Data]
+			in
+				Data

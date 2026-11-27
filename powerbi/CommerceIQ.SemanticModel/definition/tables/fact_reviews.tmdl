@@ -1,0 +1,75 @@
+table fact_reviews
+
+	column review_sk
+		dataType: int64
+		isHidden
+		sourceColumn: review_sk
+
+	column review_id
+		dataType: string
+		sourceColumn: review_id
+
+	column order_id
+		dataType: string
+		sourceColumn: order_id
+
+	column order_key
+		dataType: int64
+		isHidden
+		sourceColumn: order_key
+
+	column customer_key
+		dataType: int64
+		isHidden
+		sourceColumn: customer_key
+
+	column review_date_key
+		dataType: int64
+		isHidden
+		sourceColumn: review_date_key
+
+	column purchase_date_key
+		dataType: int64
+		isHidden
+		sourceColumn: purchase_date_key
+
+	column review_score
+		dataType: int64
+		sourceColumn: review_score
+
+	column rating_classification
+		dataType: string
+		sourceColumn: rating_classification
+
+	column review_response_hours
+		dataType: double
+		sourceColumn: review_response_hours
+
+	column has_written_review
+		dataType: int64
+		sourceColumn: has_written_review
+
+	column has_review_title
+		dataType: int64
+		sourceColumn: has_review_title
+
+	column order_status
+		dataType: string
+		sourceColumn: order_status
+
+	column is_on_time_delivery
+		dataType: int64
+		sourceColumn: is_on_time_delivery
+
+	column delivery_deviation_days
+		dataType: int64
+		sourceColumn: delivery_deviation_days
+
+	partition fact_reviews = m
+		mode: import
+		source =
+			let
+				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+				Data = Source{[Schema="commerceiq", Item="fact_reviews"]}[Data]
+			in
+				Data

@@ -1,0 +1,39 @@
+flowchart LR
+    subgraph Sources["1. Raw Sources (12 Files | 1,559,806 Rows)"]
+        R1["Olist E-Commerce (9 CSVs)"]
+        R2["Olist Marketing Funnel (2 CSVs)"]
+        R3["Nager.Date BR Holidays (1 CSV)"]
+    end
+
+    subgraph ETL["2. Ingestion & Cleaning (Python)"]
+        ING["src/ingestion/extract.py\nSHA-256 + String Preservation"]
+        CLN["src/transformation/clean.py\n13 Datasets | 165 Fields | 27 Features"]
+        PQ["data/processed/parquet/*.parquet\n1,299,152 Rows | 58.95 MiB"]
+    end
+
+    subgraph MySQL["3. MySQL 8.0 (commerceiq)"]
+        OPS["13 Operational Tables\n8 Required FKs | 3 Optional Gaps"]
+        DW["Star Schema (7 Dims, 5 Facts)\n9 Analytical Data Mart Views"]
+        SQL["41 Executed SQL Queries\nsql/03_analytics/"]
+    end
+
+    subgraph Analytics["4. Python Analytics & ML"]
+        EDA["EDA & Stats Notebooks\nHolm-Bonferroni + Effect Sizes"]
+        CUS["RFM, Cohorts & K-Means\ncustomer_unique_id"]
+        ML["Forecasting (Holt-Winters)\n& Checkout Delay Risk (HGB)"]
+        DEC["Decision Simulator\nLow / Base / High Scenarios"]
+    end
+
+    subgraph BI["5. BI & Automation"]
+        XLS["Excel Workbook + COM\nTables, XLOOKUP, Pivot, Slicers"]
+        PBI["Power BI PBIP + TMDL\n39 DAX Measures | 10 Pages"]
+        CI["pipelines/run_pipeline.py\nGitHub Actions CI + Pytest"]
+    end
+
+    R1 & R2 & R3 --> ING --> CLN --> PQ --> OPS --> DW
+    DW --> SQL
+    DW --> XLS
+    DW --> PBI
+    PQ --> EDA & CUS & ML & DEC
+    CUS & ML & DEC --> PBI
+    CI -.-> ING & CLN & OPS & DW & SQL & ML

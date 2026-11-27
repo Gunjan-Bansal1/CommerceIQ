@@ -1,0 +1,86 @@
+name: CommerceIQ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  python-and-security-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install CI-safe Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pandas numpy pyarrow openpyxl pyyaml python-dotenv scikit-learn scipy statsmodels matplotlib seaborn mysql-connector-python SQLAlchemy python-pptx
+
+      - name: Validate Python syntax
+        run: python -m compileall -q src pipelines tests
+
+      - name: Run CI-safe unit & security tests
+        run: python -m pytest tests/test_ci_synthetic.py tests/test_security.py -v
+
+  mysql-schema-validation:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ci_root_password
+          MYSQL_DATABASE: commerceiq
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -pci_root_password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install MySQL connector
+        run: pip install mysql-connector-python pandas python-dotenv PyYAML
+
+      - name: Execute operational & warehouse DDL on disposable MySQL 8.0
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: "3306"
+          DB_USER: root
+          DB_PASSWORD: ci_root_password
+          DB_NAME: commerceiq
+        run: |
+          python -c "
+          from pathlib import Path
+          from src.database.connection import get_connection
+          from src.database.load_database import execute_sql_file
+          conn = get_connection()
+          cur = conn.cursor()
+          execute_sql_file(cur, Path('sql/01_schema/01_create_database_and_tables.sql'))
+          execute_sql_file(cur, Path('sql/01_schema/02_indexes_and_constraints.sql'))
+          execute_sql_file(cur, Path('sql/02_warehouse/01_create_warehouse_schema.sql'))
+          execute_sql_file(cur, Path('sql/02_warehouse/03_create_data_marts.sql'))
+          cur.execute('SHOW TABLES')
+          tables = [r[0] for r in cur.fetchall()]
+          print('Created tables/views in CI MySQL:', len(tables), tables)
+          assert len(tables) >= 34
+          cur.close()
+          conn.close()
+          "

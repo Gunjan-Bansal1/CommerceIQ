@@ -1,0 +1,220 @@
+-- ============================================================================
+-- CommerceIQ Power BI DAX Measure Library
+-- Consistent with docs/04_kpi_dictionary.md and MySQL Warehouse (commerceiq)
+-- ============================================================================
+
+-- 1. COMMERCIAL & REVENUE MEASURES
+Total Placed Orders =
+DISTINCTCOUNT ( fact_orders[order_id] )
+
+Delivered Orders =
+CALCULATE (
+    DISTINCTCOUNT ( fact_orders[order_id] ),
+    fact_orders[is_delivered] = 1
+)
+
+Eligible Delivered Orders =
+CALCULATE (
+    DISTINCTCOUNT ( fact_orders[order_id] ),
+    fact_orders[is_delivered] = 1,
+    fact_orders[has_order_items] = 1
+)
+
+Delivered Merchandise Value (BRL) =
+CALCULATE (
+    SUM ( fact_orders[merchandise_value] ),
+    fact_orders[is_delivered] = 1,
+    fact_orders[has_order_items] = 1
+)
+
+Recorded GMV All Statuses (BRL) =
+SUM ( fact_orders[merchandise_value] )
+
+Delivered Freight Value (BRL) =
+CALCULATE (
+    SUM ( fact_orders[freight_value] ),
+    fact_orders[is_delivered] = 1,
+    fact_orders[has_order_items] = 1
+)
+
+Recorded Payment Value (BRL) =
+SUM ( fact_orders[total_payment_value] )
+
+Average Delivered Order Value (BRL) =
+DIVIDE ( [Delivered Merchandise Value (BRL)], [Eligible Delivered Orders] )
+
+Delivered Item Volume =
+CALCULATE (
+    COUNTROWS ( fact_order_items ),
+    fact_order_items[is_delivered] = 1
+)
+
+Average Item Price (BRL) =
+DIVIDE (
+    CALCULATE ( SUM ( fact_order_items[price] ), fact_order_items[is_delivered] = 1 ),
+    [Delivered Item Volume]
+)
+
+-- Time Intelligence (requires active relationship dim_date[full_date] -> fact_orders[purchase_date_key])
+Prior Month Delivered Merch (BRL) =
+CALCULATE (
+    [Delivered Merchandise Value (BRL)],
+    DATEADD ( dim_date[full_date], -1, MONTH )
+)
+
+MoM Merch Growth % =
+VAR CurrentMerch = [Delivered Merchandise Value (BRL)]
+VAR PriorMerch = [Prior Month Delivered Merch (BRL)]
+RETURN
+    DIVIDE ( CurrentMerch - PriorMerch, PriorMerch )
+
+Prior Year Delivered Merch (BRL) =
+CALCULATE (
+    [Delivered Merchandise Value (BRL)],
+    SAMEPERIODLASTYEAR ( dim_date[full_date] )
+)
+
+YoY Merch Growth % =
+VAR CurrentMerch = [Delivered Merchandise Value (BRL)]
+VAR PriorYrMerch = [Prior Year Delivered Merch (BRL)]
+RETURN
+    DIVIDE ( CurrentMerch - PriorYrMerch, PriorYrMerch )
+
+YTD Delivered Merch (BRL) =
+CALCULATE (
+    [Delivered Merchandise Value (BRL)],
+    DATESYTD ( dim_date[full_date] )
+)
+
+-- 2. REVENUE LEAKAGE MEASURES
+Unsuccessful Orders =
+CALCULATE (
+    DISTINCTCOUNT ( fact_orders[order_id] ),
+    fact_orders[is_unsuccessful] = 1
+)
+
+Unsuccessful Order Rate % =
+DIVIDE ( [Unsuccessful Orders], [Total Placed Orders] )
+
+Recorded Unsuccessful Merch Value (BRL) =
+CALCULATE (
+    SUM ( fact_orders[merchandise_value] ),
+    fact_orders[is_unsuccessful] = 1,
+    fact_orders[has_order_items] = 1
+)
+
+-- 3. CUSTOMER MEASURES (using persistent customer_unique_id)
+Unique Purchasing Customers =
+CALCULATE (
+    DISTINCTCOUNT ( dim_customer[customer_unique_id] ),
+    FILTER (
+        VALUES ( fact_orders[order_id] ),
+        CALCULATE ( MAX ( fact_orders[is_delivered] ) ) = 1
+    )
+)
+
+Repeat Customers =
+COUNTROWS (
+    FILTER (
+        SUMMARIZE (
+            CALCULATETABLE ( fact_orders, fact_orders[is_delivered] = 1, fact_orders[has_order_items] = 1 ),
+            dim_customer[customer_unique_id],
+            "OrderCnt", DISTINCTCOUNT ( fact_orders[order_id] )
+        ),
+        [OrderCnt] >= 2
+    )
+)
+
+Repeat Purchase Rate % =
+DIVIDE ( [Repeat Customers], [Unique Purchasing Customers] )
+
+Customer Observed Spend (BRL) =
+AVERAGEX (
+    VALUES ( dim_customer[customer_unique_id] ),
+    [Delivered Merchandise Value (BRL)]
+)
+
+-- 4. LOGISTICS & SLA MEASURES
+Eligible Delivery SLA Orders =
+CALCULATE (
+    COUNTROWS ( fact_orders ),
+    fact_orders[is_valid_delivery_promise_comparison] = 1
+)
+
+On-Time Deliveries =
+CALCULATE (
+    COUNTROWS ( fact_orders ),
+    fact_orders[is_on_time_delivery] = 1
+)
+
+On-Time Delivery Rate % =
+DIVIDE ( [On-Time Deliveries], [Eligible Delivery SLA Orders] )
+
+Late Deliveries =
+CALCULATE (
+    COUNTROWS ( fact_orders ),
+    fact_orders[delivery_performance] = "late"
+)
+
+Late Delivery Rate % =
+DIVIDE ( [Late Deliveries], [Eligible Delivery SLA Orders] )
+
+Mean Delivery Duration (Days) =
+CALCULATE (
+    AVERAGE ( fact_orders[delivery_duration_days] ),
+    fact_orders[is_delivered] = 1
+)
+
+Freight to Merchandise Ratio % =
+DIVIDE ( [Delivered Freight Value (BRL)], [Delivered Merchandise Value (BRL)] )
+
+-- 5. CUSTOMER SATISFACTION MEASURES
+Total Reviews =
+COUNTROWS ( fact_reviews )
+
+Mean Review Score =
+AVERAGE ( fact_reviews[review_score] )
+
+Positive Review Rate % =
+DIVIDE (
+    CALCULATE ( COUNTROWS ( fact_reviews ), fact_reviews[rating_classification] = "positive" ),
+    [Total Reviews]
+)
+
+Negative Review Rate % =
+DIVIDE (
+    CALCULATE ( COUNTROWS ( fact_reviews ), fact_reviews[rating_classification] = "negative" ),
+    [Total Reviews]
+)
+
+-- 6. MARKETING FUNNEL MEASURES
+Qualified Leads (MQL) =
+DISTINCTCOUNT ( fact_marketing_funnel[mql_id] )
+
+Converted Closed Deals =
+CALCULATE (
+    DISTINCTCOUNT ( fact_marketing_funnel[mql_id] ),
+    fact_marketing_funnel[has_closed_deal] = 1
+)
+
+Lead Conversion Rate % =
+DIVIDE ( [Converted Closed Deals], [Qualified Leads (MQL)] )
+
+Mean Sales Cycle (Days) =
+CALCULATE (
+    AVERAGE ( fact_marketing_funnel[conversion_duration_days] ),
+    fact_marketing_funnel[is_valid_conversion_duration] = 1
+)
+
+-- 7. PREDICTIVE & DECISION MEASURES
+High Risk Orders Predicted =
+CALCULATE (
+    COUNTROWS ( delivery_risk_predictions ),
+    delivery_risk_predictions[predicted_high_risk_flag] = 1
+)
+
+Base Simulated Impact (BRL) =
+CALCULATE (
+    SUM ( decision_scenarios[simulated_gmv_or_savings_brl] ),
+    decision_scenarios[tier] = SELECTEDVALUE ( decision_scenarios[tier], "Base" )
+)

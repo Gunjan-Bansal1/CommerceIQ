@@ -1,0 +1,27 @@
+table dim_marketing_channel
+
+	column channel_key
+		dataType: int64
+		isHidden
+		sourceColumn: channel_key
+
+	column origin
+		dataType: string
+		sourceColumn: origin
+
+	column channel_group
+		dataType: string
+		sourceColumn: channel_group
+
+	column is_recorded_origin
+		dataType: int64
+		sourceColumn: is_recorded_origin
+
+	partition dim_marketing_channel = m
+		mode: import
+		source =
+			let
+				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+				Data = Source{[Schema="commerceiq", Item="dim_marketing_channel"]}[Data]
+			in
+				Data

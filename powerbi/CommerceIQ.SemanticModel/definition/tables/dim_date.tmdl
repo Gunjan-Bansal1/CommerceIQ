@@ -1,0 +1,81 @@
+table dim_date
+	dataCategory: Time
+
+	column date_key
+		dataType: int64
+		isHidden
+		sourceColumn: date_key
+
+	column full_date
+		dataType: dateTime
+		isKey
+		sourceColumn: full_date
+
+	column year_num
+		dataType: int64
+		sourceColumn: year_num
+
+	column quarter_num
+		dataType: int64
+		sourceColumn: quarter_num
+
+	column year_quarter
+		dataType: string
+		sourceColumn: year_quarter
+
+	column month_num
+		dataType: int64
+		sourceColumn: month_num
+
+	column month_name
+		dataType: string
+		sourceColumn: month_name
+
+	column year_month_str
+		dataType: string
+		sourceColumn: year_month_str
+
+	column day_of_month
+		dataType: int64
+		sourceColumn: day_of_month
+
+	column day_of_week
+		dataType: int64
+		sourceColumn: day_of_week
+
+	column day_name
+		dataType: string
+		sourceColumn: day_name
+
+	column is_weekend
+		dataType: int64
+		sourceColumn: is_weekend
+
+	column is_core_reporting_period
+		dataType: int64
+		sourceColumn: is_core_reporting_period
+
+	column is_brazil_national_holiday
+		dataType: int64
+		sourceColumn: is_brazil_national_holiday
+
+	column is_brazil_any_holiday
+		dataType: int64
+		sourceColumn: is_brazil_any_holiday
+
+	column holiday_name
+		dataType: string
+		sourceColumn: holiday_name
+
+	column holiday_local_name
+		dataType: string
+		sourceColumn: holiday_local_name
+
+	partition dim_date = m
+		mode: import
+		source =
+			let
+				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+				Data = Source{[Schema="commerceiq", Item="dim_date"]}[Data]
+			in
+				Data

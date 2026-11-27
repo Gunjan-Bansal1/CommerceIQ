@@ -1,0 +1,18 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+
+ref table dim_date
+ref table dim_geography
+ref table dim_customer
+ref table dim_seller
+ref table dim_product
+ref table dim_payment_type
+ref table dim_marketing_channel
+ref table fact_orders
+ref table fact_order_items
+ref table fact_payments
+ref table fact_reviews
+ref table fact_marketing_funnel
+ref table _Measures

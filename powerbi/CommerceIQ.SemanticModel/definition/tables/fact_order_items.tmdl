@@ -1,0 +1,91 @@
+table fact_order_items
+
+	column order_item_sk
+		dataType: int64
+		isHidden
+		sourceColumn: order_item_sk
+
+	column order_id
+		dataType: string
+		sourceColumn: order_id
+
+	column order_item_id
+		dataType: int64
+		sourceColumn: order_item_id
+
+	column order_key
+		dataType: int64
+		isHidden
+		sourceColumn: order_key
+
+	column customer_key
+		dataType: int64
+		isHidden
+		sourceColumn: customer_key
+
+	column product_key
+		dataType: int64
+		isHidden
+		sourceColumn: product_key
+
+	column seller_key
+		dataType: int64
+		isHidden
+		sourceColumn: seller_key
+
+	column purchase_date_key
+		dataType: int64
+		isHidden
+		sourceColumn: purchase_date_key
+
+	column shipping_limit_date
+		dataType: dateTime
+		sourceColumn: shipping_limit_date
+
+	column order_status
+		dataType: string
+		sourceColumn: order_status
+
+	column is_delivered
+		dataType: int64
+		sourceColumn: is_delivered
+
+	column is_core_reporting_period
+		dataType: int64
+		sourceColumn: is_core_reporting_period
+
+	column price
+		dataType: decimal
+		formatString: "#,##0.00"
+		sourceColumn: price
+
+	column freight_value
+		dataType: decimal
+		formatString: "#,##0.00"
+		sourceColumn: freight_value
+
+	column item_value_with_freight
+		dataType: decimal
+		formatString: "#,##0.00"
+		sourceColumn: item_value_with_freight
+
+	column freight_to_price_pct
+		dataType: double
+		sourceColumn: freight_to_price_pct
+
+	column freight_share_of_item_total_pct
+		dataType: double
+		sourceColumn: freight_share_of_item_total_pct
+
+	column is_same_state_fulfillment
+		dataType: int64
+		sourceColumn: is_same_state_fulfillment
+
+	partition fact_order_items = m
+		mode: import
+		source =
+			let
+				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+				Data = Source{[Schema="commerceiq", Item="fact_order_items"]}[Data]
+			in
+				Data

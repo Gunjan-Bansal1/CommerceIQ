@@ -1,0 +1,40 @@
+{
+  "executed_at_utc": "2026-11-27T17:28:55.060709+00:00",
+  "status": "SUCCESS",
+  "total_elapsed_sec": 126.606,
+  "stages": [
+    {
+      "stage": "validate_sources",
+      "status": "SUCCESS",
+      "elapsed_sec": 2.564,
+      "details": {
+        "registered_datasets": 12,
+        "missing_files": 0
+      }
+    },
+    {
+      "stage": "sql_analytics",
+      "status": "SUCCESS",
+      "elapsed_sec": 99.242,
+      "details": {
+        "queries_executed": 41
+      }
+    },
+    {
+      "stage": "analytics",
+      "status": "SUCCESS",
+      "elapsed_sec": 6.099,
+      "details": {
+        "scenarios_generated": 15
+      }
+    },
+    {
+      "stage": "validate",
+      "status": "SUCCESS",
+      "elapsed_sec": 18.698,
+      "details": {
+        "pytest_returncode": 0
+      }
+    }
+  ]
+}

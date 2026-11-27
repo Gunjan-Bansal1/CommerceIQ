@@ -1,0 +1,84 @@
+table fact_marketing_funnel
+
+	column mql_sk
+		dataType: int64
+		isHidden
+		sourceColumn: mql_sk
+
+	column mql_id
+		dataType: string
+		sourceColumn: mql_id
+
+	column channel_key
+		dataType: int64
+		isHidden
+		sourceColumn: channel_key
+
+	column first_contact_date_key
+		dataType: int64
+		isHidden
+		sourceColumn: first_contact_date_key
+
+	column won_date_key
+		dataType: int64
+		isHidden
+		sourceColumn: won_date_key
+
+	column seller_key
+		dataType: int64
+		isHidden
+		sourceColumn: seller_key
+
+	column has_closed_deal
+		dataType: int64
+		sourceColumn: has_closed_deal
+
+	column has_marketplace_seller_match
+		dataType: int64
+		sourceColumn: has_marketplace_seller_match
+
+	column conversion_duration_days
+		dataType: double
+		sourceColumn: conversion_duration_days
+
+	column is_valid_conversion_duration
+		dataType: int64
+		sourceColumn: is_valid_conversion_duration
+
+	column declared_monthly_revenue
+		dataType: decimal
+		formatString: "#,##0.00"
+		sourceColumn: declared_monthly_revenue
+
+	column declared_product_catalog_size
+		dataType: int64
+		sourceColumn: declared_product_catalog_size
+
+	column business_segment
+		dataType: string
+		sourceColumn: business_segment
+
+	column lead_type
+		dataType: string
+		sourceColumn: lead_type
+
+	column business_type
+		dataType: string
+		sourceColumn: business_type
+
+	column sdr_id
+		dataType: string
+		sourceColumn: sdr_id
+
+	column sr_id
+		dataType: string
+		sourceColumn: sr_id
+
+	partition fact_marketing_funnel = m
+		mode: import
+		source =
+			let
+				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+				Data = Source{[Schema="commerceiq", Item="fact_marketing_funnel"]}[Data]
+			in
+				Data

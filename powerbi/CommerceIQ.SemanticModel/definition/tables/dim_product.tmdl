@@ -1,0 +1,63 @@
+table dim_product
+
+	column product_key
+		dataType: int64
+		isHidden
+		sourceColumn: product_key
+
+	column product_id
+		dataType: string
+		sourceColumn: product_id
+
+	column product_category_name
+		dataType: string
+		sourceColumn: product_category_name
+
+	column product_category_name_english
+		dataType: string
+		sourceColumn: product_category_name_english
+
+	column product_name_length
+		dataType: int64
+		sourceColumn: product_name_length
+
+	column product_description_length
+		dataType: int64
+		sourceColumn: product_description_length
+
+	column product_photos_qty
+		dataType: int64
+		sourceColumn: product_photos_qty
+
+	column product_weight_g
+		dataType: double
+		sourceColumn: product_weight_g
+
+	column product_length_cm
+		dataType: double
+		sourceColumn: product_length_cm
+
+	column product_height_cm
+		dataType: double
+		sourceColumn: product_height_cm
+
+	column product_width_cm
+		dataType: double
+		sourceColumn: product_width_cm
+
+	column product_volume_cm3
+		dataType: double
+		sourceColumn: product_volume_cm3
+
+	column product_density_g_cm3
+		dataType: double
+		sourceColumn: product_density_g_cm3
+
+	partition dim_product = m
+		mode: import
+		source =
+			let
+				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+				Data = Source{[Schema="commerceiq", Item="dim_product"]}[Data]
+			in
+				Data
