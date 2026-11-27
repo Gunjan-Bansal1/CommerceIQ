@@ -1,0 +1,15 @@
+metric,value
+Original datasets,12
+Final datasets,13
+Original records,1559806
+Records removed,279668
+Records added,19014
+Final records,1299152
+Original fields,81
+Final fields,165
+Final missing cells,186367
+Quality observations reviewed,43
+Cleaning actions,107
+Validation checks,20
+Validation checks passed,20
+Validation checks failed,0
