@@ -96,6 +96,10 @@ Launch the live 10-page interactive application backed directly by MySQL `commer
 |---|
 | ![Excel Decision Simulator](reports/figures/excel_decision_simulator.png) |
 
+### Power BI Desktop Project (`powerbi/CommerceIQ.pbip`)
+- **Semantic Model & Layout:** `17` TMDL tables (`12` MySQL warehouse tables + `4` strongly-typed `"en-US"` CSV analytical extensions + `_Measures`), `15` relationships, `61` explicit DAX measures, and **`10` report pages / `84` visuals** with `prototypeQuery` bindings, dropdown slicers, cross-page `pageNavigator`, and drill-through filters (see [`docs/12_powerbi_architecture.md`](file:///c:/Users/bgunj/Desktop/commerceIQ/docs/12_powerbi_architecture.md) and [`reports/powerbi_kpi_reconciliation.md`](file:///c:/Users/bgunj/Desktop/commerceIQ/reports/powerbi_kpi_reconciliation.md)).
+- **Validation Status:** PBIR/TMDL schemas and MySQL/CSV source-key constraints passed automated verification, and native Power BI Desktop refresh with MySQL Connector/NET (`MySql.Data.MySqlClient`) has been manually confirmed working. *(Static Power BI Desktop screenshots are not yet saved under `powerbi/screenshots/`.)*
+
 ### Python Analytical & Predictive Figures (`reports/figures/`)
 | Monthly Trends & Seasonality | Customer Cohort & RFM | Demand Forecast Backtest |
 |---|---|---|
