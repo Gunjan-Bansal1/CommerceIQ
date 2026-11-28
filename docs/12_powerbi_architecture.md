@@ -30,11 +30,16 @@
 9. **Predictive Intelligence:** Historical Weekly Backtest & 8-Week Illustrative Continuation (`forecast_outputs`), Checkout Delay Risk Tiers & Top Drivers (`delivery_risk_predictions`).
 10. **Decision Intelligence:** Low/Base/High Illustrative Scenarios & Opportunity Prioritization Matrix (`decision_scenarios`).
 
-## 4. Validation Status & Exact Manual GUI Procedure
+## 4. Audit Findings, Fixes Applied & Exact Connector/GUI Steps
 
-- **Source Assets Status:** **CREATED & VERIFIED** (`PBIP`, `TMDL`, `DAX`, `M`, `Theme JSON`, and SQL-backed KPI reconciliation).
-- **Native Desktop Rendering Status:** **PENDING INTERACTIVE GUI OPEN** (`PBIDesktopStore.exe` is an interactive Microsoft Store GUI application that requires opening the `.pbip` interactively and signing into MySQL Connector/Net if prompted).
-- **Shortest Manual Steps in Power BI Desktop:**
-  1. Double-click `powerbi/CommerceIQ.pbip` (or open via `File -> Open` in Power BI Desktop).
-  2. When prompted for MySQL credentials on `localhost / commerceiq`, enter your local MySQL user/password (Database/Windows auth) and approve Privacy Levels (`Organizational`).
-  3. Click **Refresh** on the Home ribbon to load all warehouse tables and downstream CSVs, then **File -> Save as** `.pbix` and export screenshots to `powerbi/screenshots/` if desired.
+- **Source Assets & Schema Status:** **REPAIRED & VALIDATED** (`17` TMDL tables, `15` relationships, `61` formatted DAX measures, `10` PBIR pages, `84` visuals with explicit `prototypeQuery` + `active` projections + explicit measure bindings, strongly typed CSV M partitions, and `dim_geography[state_brazil]` geo disambiguation).
+- **Root Causes Diagnosed & Resolved:**
+  1. **Empty Visuals ("Select or drag fields to populate this visual."):** Original `report.json` visuals omitted `prototypeQuery` (`Version: 2`) and `"active": true` on categorical/slicer projections, and Pages 3, 9, and 10 referenced raw columns despite `discourageImplicitMeasures`. All 84 visuals now bind explicit `prototypeQuery` queries and explicit `_Measures.*` metrics, plus cross-grain `fact_order_items` / `fact_payments` measures for product, seller, and payment slicing.
+  2. **MySQL Connection Error (`MySql.Data.MySqlClient`):** Confirmed via Windows `.NET DbProviderFactories`, GAC, and `MySQL Installer` inspection that **MySQL Connector/NET** is NOT installed on the host Windows system (only MySQL Server/Shell/Workbench 8.0.44 and Installer 1.6.16.0 are present), and installing it writes to `.NET GAC / machine.config` requiring Windows Administrator UAC elevation.
+- **Native Desktop Rendering & Refresh Status:** **BLOCKED BY SYSTEM CONNECTOR PREREQUISITE** (`PBIDesktopStore.exe` v2.160.1151.0 x64 cannot refresh `MySQL.Database("localhost", "commerceiq")` until 64-bit MySQL Connector/NET 8.0.x is installed with Administrator privileges).
+- **Exact Steps to Complete Live Refresh in Power BI Desktop:**
+  1. Close Power BI Desktop (`PBIDesktop.exe`).
+  2. Download **64-bit MySQL Connector/NET 8.0.x** (e.g., `8.0.36`, **not `9.x`** which Power BI Desktop does not natively recognize) from the official Oracle archive: https://dev.mysql.com/downloads/connector/net/ (select Archives -> `8.0.36` -> Microsoft Windows x64 MSI) and run the installer as **Administrator**.
+  3. Verify registration in PowerShell: `[System.Data.Common.DbProviderFactories]::GetFactoryClasses()` lists `MySql.Data.MySqlClient`.
+  4. Re-open [`powerbi/CommerceIQ.pbip`](file:///c:/Users/bgunj/Desktop/commerceIQ/powerbi/CommerceIQ.pbip), supply local MySQL credentials for `localhost / commerceiq`, approve **Organizational** privacy levels if prompted, and click **Refresh** on the Home ribbon.
+  5. Save via **File -> Save** (or **Save as `.pbix`**) and optionally capture screenshots into `powerbi/screenshots/`.

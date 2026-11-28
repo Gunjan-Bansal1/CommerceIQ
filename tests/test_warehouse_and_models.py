@@ -15,6 +15,7 @@ from decimal import Decimal
 import json
 import os
 from pathlib import Path
+import re
 
 import openpyxl
 import pandas as pd
@@ -127,3 +128,43 @@ def test_pipeline_execution_metadata_exists():
         pytest.skip("Pipeline automation has not been executed yet")
     data = json.loads(summary_path.read_text(encoding="utf-8"))
     assert data["status"] == "SUCCESS"
+
+
+def test_powerbi_pbir_and_tmdl_bindings():
+    tables_dir = PROJECT_ROOT / "powerbi" / "CommerceIQ.SemanticModel" / "definition" / "tables"
+    model_cols = {}
+    measures = set()
+    for p in tables_dir.glob("*.tmdl"):
+        txt = p.read_text(encoding="utf-8")
+        model_cols[p.stem] = set(re.findall(r"^\tcolumn\s+([^\s=]+)", txt, flags=re.M))
+        if p.stem == "_Measures":
+            measures = set(re.findall(r"^\tmeasure\s+'([^']+)'", txt, flags=re.M))
+        elif p.stem in {"customer_rfm_segments", "forecast_outputs", "delivery_risk_predictions", "decision_scenarios"}:
+            assert "Table.TransformColumnTypes" in txt
+
+    assert len(model_cols) == 17
+    assert len(measures) >= 60
+
+    rep = json.loads((PROJECT_ROOT / "powerbi" / "CommerceIQ.Report" / "report.json").read_text(encoding="utf-8"))
+    assert len(rep["sections"]) == 10
+    total_vis = 0
+    for sec in rep["sections"]:
+        for vc in sec["visualContainers"]:
+            total_vis += 1
+            sv = json.loads(vc["config"])["singleVisual"]
+            if sv["visualType"] == "pageNavigator":
+                continue
+            pq = sv["prototypeQuery"]
+            assert pq["Version"] == 2 and len(pq["Select"]) >= 1
+            sel_names = {s["Name"] for s in pq["Select"]}
+            for items in sv["projections"].values():
+                for it in items:
+                    ref = it["queryRef"]
+                    assert ref in sel_names
+                    ent, prop = ref.split(".", 1)
+                    if ent == "_Measures":
+                        assert prop in measures
+                    else:
+                        assert prop in model_cols[ent]
+                        assert it.get("active") is True
+    assert total_vis == 84

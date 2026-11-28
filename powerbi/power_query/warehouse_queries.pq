@@ -1,79 +1,44 @@
 // CommerceIQ Power BI Power Query M Definitions
-// Connects to MySQL Warehouse (`commerceiq`) and downstream Phase 11/12/14 CSV outputs.
+// Connects to MySQL Warehouse (`commerceiq`, requires 64-bit MySQL Connector/NET 8.0.x)
+// and strongly typed downstream Phase 11/12/14 CSV outputs.
 
-// 1. dim_date
-let
-    Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-    Data = Source{[Schema="commerceiq", Item="dim_date"]}[Data]
-in
-    Data
-
-// 2. dim_customer
-let
-    Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-    Data = Source{[Schema="commerceiq", Item="dim_customer"]}[Data]
-in
-    Data
-
-// 3. dim_seller
-let
-    Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-    Data = Source{[Schema="commerceiq", Item="dim_seller"]}[Data]
-in
-    Data
-
-// 4. dim_product
-let
-    Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-    Data = Source{[Schema="commerceiq", Item="dim_product"]}[Data]
-in
-    Data
-
-// 5. dim_geography
-let
-    Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-    Data = Source{[Schema="commerceiq", Item="dim_geography"]}[Data]
-in
-    Data
-
-// 6. fact_orders
+// 1-12: Warehouse Tables (dim_date, dim_geography, dim_customer, dim_seller,
+// dim_product, dim_payment_type, dim_marketing_channel, fact_orders,
+// fact_order_items, fact_payments, fact_reviews, fact_marketing_funnel)
 let
     Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
     Data = Source{[Schema="commerceiq", Item="fact_orders"]}[Data]
 in
     Data
 
-// 7. fact_order_items
+// 13. customer_rfm_segments (Typed CSV)
 let
-    Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-    Data = Source{[Schema="commerceiq", Item="fact_order_items"]}[Data]
+    Source = Csv.Document(File.Contents("C:\Users\bgunj\Desktop\commerceIQ\data\processed\customer_rfm_segments.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+    PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+    TypedTable = Table.TransformColumnTypes(PromotedHeaders, {{"customer_unique_id", type text}, {"primary_state", type text}, {"recency_days", Int64.Type}, {"frequency", Int64.Type}, {"monetary_brl", type number}, {"r_score", Int64.Type}, {"f_score", Int64.Type}, {"m_score", Int64.Type}, {"rfm_segment", type text}, {"cluster_id", Int64.Type}, {"is_repeat", type logical}, {"illustrative_15pct_gross_margin_brl", type number}})
 in
-    Data
+    TypedTable
 
-// 8. fact_payments
+// 14. forecast_outputs (Typed CSV)
 let
-    Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-    Data = Source{[Schema="commerceiq", Item="fact_payments"]}[Data]
+    Source = Csv.Document(File.Contents("C:\Users\bgunj\Desktop\commerceIQ\data\processed\forecast_outputs.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+    PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+    TypedTable = Table.TransformColumnTypes(PromotedHeaders, {{"week_start", type date}, {"actual_value", type number}, {"target", type text}, {"record_type", type text}, {"model", type text}, {"predicted_value", type number}, {"ci_lower_95", type number}, {"ci_upper_95", type number}})
 in
-    Data
+    TypedTable
 
-// 9. fact_reviews
+// 15. delivery_risk_predictions (Typed CSV)
 let
-    Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-    Data = Source{[Schema="commerceiq", Item="fact_reviews"]}[Data]
+    Source = Csv.Document(File.Contents("C:\Users\bgunj\Desktop\commerceIQ\data\processed\delivery_risk_predictions.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+    PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+    TypedTable = Table.TransformColumnTypes(PromotedHeaders, {{"order_id", type text}, {"order_purchase_timestamp", type datetime}, {"customer_state", type text}, {"seller_state", type text}, {"customer_region", type text}, {"seller_region", type text}, {"estimated_delivery_days", type number}, {"approx_distance_km", type number}, {"is_late", Int64.Type}, {"predicted_late_prob", type number}, {"predicted_high_risk_flag", Int64.Type}, {"risk_tier", type text}})
 in
-    Data
+    TypedTable
 
-// 10. fact_marketing_funnel
+// 16. decision_scenarios (Typed CSV)
 let
-    Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-    Data = Source{[Schema="commerceiq", Item="fact_marketing_funnel"]}[Data]
+    Source = Csv.Document(File.Contents("C:\Users\bgunj\Desktop\commerceIQ\data\processed\decision_scenarios.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+    PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+    TypedTable = Table.TransformColumnTypes(PromotedHeaders, {{"scenario_id", type text}, {"scenario_name", type text}, {"tier", type text}, {"observed_baseline_label", type text}, {"observed_baseline_value", type number}, {"assumed_input_parameter", type number}, {"driver_unit", type text}, {"illustrative_margin_assumption", type number}, {"illustrative_intervention_cost_brl", type number}, {"simulated_gmv_or_savings_brl", type number}, {"simulated_illustrative_contribution_brl", type number}, {"simulated_illustrative_net_benefit_brl", type number}, {"is_illustrative_simulation", type logical}})
 in
-    Data
-
-// 11. Downstream Python Analytics Outputs (RFM, Forecasts, Delivery Risk, Decision Scenarios)
-let
-    RFM = Csv.Document(File.Contents("C:\Users\bgunj\Desktop\commerceIQ\data\processed\customer_rfm_segments.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
-    RFM_Typed = Table.PromoteHeaders(RFM, [PromoteAllScalars=true])
-in
-    RFM_Typed
+    TypedTable

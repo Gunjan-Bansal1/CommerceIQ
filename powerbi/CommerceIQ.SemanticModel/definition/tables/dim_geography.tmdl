@@ -11,10 +11,12 @@ table dim_geography
 
 	column city
 		dataType: string
+		dataCategory: City
 		sourceColumn: city
 
 	column state
 		dataType: string
+		dataCategory: StateOrProvince
 		sourceColumn: state
 
 	column region
@@ -23,10 +25,12 @@ table dim_geography
 
 	column latitude
 		dataType: double
+		dataCategory: Latitude
 		sourceColumn: latitude
 
 	column longitude
 		dataType: double
+		dataCategory: Longitude
 		sourceColumn: longitude
 
 	column is_ambiguous_zip
@@ -40,6 +44,10 @@ table dim_geography
 	column has_geolocation_match
 		dataType: int64
 		sourceColumn: has_geolocation_match
+
+	column state_brazil = dim_geography[state] & ", Brazil"
+		dataType: string
+		dataCategory: StateOrProvince
 
 	partition dim_geography = m
 		mode: import

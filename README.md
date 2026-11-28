@@ -48,7 +48,7 @@ Diagram sources in [`docs/diagrams/`](file:///c:/Users/bgunj/Desktop/commerceIQ/
 
 - **Data Engineering & Testing:** Python 3.13.3, Pandas 3.1.1, NumPy 2.5.5, PyArrow 26.0, Pytest 9.2, GitHub Actions
 - **Database & Warehouse:** MySQL 8.0.44, SQLAlchemy 2.1.9, `mysql-connector-python`
-- **Business Intelligence:** Microsoft Excel (OpenPyXL + Excel 16.0 COM PivotTables/PivotChart/Slicers + Power Query `.pq`), Power BI (PBIP, 17-table TMDL Semantic Model, 39 DAX measures, 10-page/84-visual PBIR)
+- **Business Intelligence:** Microsoft Excel (OpenPyXL + Excel 16.0 COM PivotTables/PivotChart/Slicers + Power Query `.pq`), Power BI (PBIP, 17-table TMDL Semantic Model, 61 DAX measures, 10-page/84-visual PBIR)
 - **Interactive Web Application:** Streamlit 1.67.0, Plotly 7.2.0 (`app/main.py` 10-page CommerceIQ Analytics Studio)
 - **Analytics & ML:** Matplotlib, Seaborn, SciPy, Statsmodels, Scikit-Learn, Python-PPTX
 
@@ -113,7 +113,7 @@ Launch the live 10-page interactive application backed directly by MySQL `commer
 - `src/warehouse/` & `sql/02_warehouse/` — Star schema (7 dims, 5 facts) & 9 business data marts
 - `sql/03_analytics/` & `src/analytics/run_sql_analytics.py` — 41 executed SQL queries tracing 120 business questions
 - `excel/` & `src/analytics/build_excel_workbook.py`, `enhance_and_capture_excel.py` — Executive Excel workbook, Decision Simulator, COM recalculation & capture, Power Query `.pq` scripts
-- `powerbi/` — Native Power BI Project (`CommerceIQ.pbip`), 17-table TMDL semantic model, 39 DAX measures, 10-page/84-visual PBIR layout (`report.json`), and theme JSON
+- `powerbi/` — Native Power BI Project (`CommerceIQ.pbip`), 17-table TMDL semantic model, 61 DAX measures, 10-page/84-visual PBIR layout (`report.json` with `prototypeQuery` bindings), and theme JSON
 - `notebooks/` — 8 executed Jupyter notebooks (`00_data_ingestion` through `07_delivery_risk_classification`) with outputs preserved
 - `src/forecasting/` & `src/optimization/` — Forecasting, zero-leakage delivery risk classification, and decision simulator
 - `pipelines/run_pipeline.py` & `.github/workflows/ci.yml` — End-to-end automated CLI runner and CI workflow
@@ -145,9 +145,8 @@ Launch the live 10-page interactive application backed directly by MySQL `commer
    python -m pytest tests/ -v
    ```
 5. **Open & Refresh Power BI Desktop (`PBIDesktopStore.exe`)**
-   - Double-click [`powerbi/CommerceIQ.pbip`](file:///c:/Users/bgunj/Desktop/commerceIQ/powerbi/CommerceIQ.pbip) in Power BI Desktop.
-   - Enter local MySQL credentials for `localhost / commerceiq` and approve **Organizational** privacy levels if prompted.
-   - Click **Refresh** on the Home ribbon to hydrate all 17 model tables across all 10 report pages (84 visuals), then export live Desktop screenshots to `powerbi/screenshots/` if desired.
+   - Install **64-bit MySQL Connector/NET 8.0.x** (e.g., `8.0.36`, not `9.x`) from https://dev.mysql.com/downloads/connector/net/ with Administrator privileges so `.NET` registers `MySql.Data.MySqlClient`.
+   - Open [`powerbi/CommerceIQ.pbip`](file:///c:/Users/bgunj/Desktop/commerceIQ/powerbi/CommerceIQ.pbip) in Power BI Desktop, enter local MySQL credentials for `localhost / commerceiq`, approve **Organizational** privacy levels if prompted, and click **Refresh** to hydrate all 17 model tables across all 10 report pages (84 bound visuals).
 
 ---
 

@@ -53,6 +53,7 @@ table delivery_risk_predictions
 		source =
 			let
 				Source = Csv.Document(File.Contents("C:\Users\bgunj\Desktop\commerceIQ\data\processed\delivery_risk_predictions.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
-				PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+				PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				TypedTable = Table.TransformColumnTypes(PromotedHeaders, {{"order_id", type text}, {"order_purchase_timestamp", type datetime}, {"customer_state", type text}, {"seller_state", type text}, {"customer_region", type text}, {"seller_region", type text}, {"estimated_delivery_days", type number}, {"approx_distance_km", type number}, {"is_late", Int64.Type}, {"predicted_late_prob", type number}, {"predicted_high_risk_flag", Int64.Type}, {"risk_tier", type text}})
 			in
-				PromotedHeaders
+				TypedTable

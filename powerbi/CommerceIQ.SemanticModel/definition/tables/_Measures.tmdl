@@ -39,9 +39,52 @@ table _Measures
 			)
 		formatString: "#,##0.00"
 
+	measure 'Recorded Freight Value (BRL)' =
+			SUM ( fact_orders[freight_value] )
+		formatString: "#,##0.00"
+
 	measure 'Recorded Payment Value (BRL)' =
 			SUM ( fact_orders[total_payment_value] )
 		formatString: "#,##0.00"
+
+	measure 'Item Fact Payment Value (BRL)' =
+			SUM ( fact_payments[payment_value] )
+		formatString: "#,##0.00"
+
+	measure 'Item Delivered Merchandise Value (BRL)' =
+			CALCULATE (
+			    SUM ( fact_order_items[price] ),
+			    fact_order_items[is_delivered] = 1
+			)
+		formatString: "#,##0.00"
+
+	measure 'Seller Delivered Orders' =
+			CALCULATE (
+			    DISTINCTCOUNT ( fact_order_items[order_id] ),
+			    fact_order_items[is_delivered] = 1
+			)
+		formatString: "#,##0"
+
+	measure 'Seller Late Delivery Rate %' =
+			CALCULATE (
+			    [Late Delivery Rate %],
+			    CROSSFILTER ( fact_order_items[order_key], fact_orders[order_key], Both )
+			)
+		formatString: 0.00%
+
+	measure 'Seller Unsuccessful Rate %' =
+			CALCULATE (
+			    [Unsuccessful Order Rate %],
+			    CROSSFILTER ( fact_order_items[order_key], fact_orders[order_key], Both )
+			)
+		formatString: 0.00%
+
+	measure 'Seller Mean Review Score' =
+			CALCULATE (
+			    [Mean Review Score],
+			    CROSSFILTER ( fact_order_items[order_key], fact_orders[order_key], Both )
+			)
+		formatString: "0.00"
 
 	measure 'Average Delivered Order Value (BRL)' =
 			DIVIDE ( [Delivered Merchandise Value (BRL)], [Eligible Delivered Orders] )
@@ -233,12 +276,75 @@ table _Measures
 			)
 		formatString: "0.00"
 
+	measure 'RFM Segment Customers' =
+			DISTINCTCOUNT ( customer_rfm_segments[customer_unique_id] )
+		formatString: "#,##0"
+
+	measure 'RFM Repeat Customers' =
+			CALCULATE (
+			    DISTINCTCOUNT ( customer_rfm_segments[customer_unique_id] ),
+			    customer_rfm_segments[is_repeat] = TRUE ()
+			)
+		formatString: "#,##0"
+
+	measure 'RFM Repeat Rate %' =
+			DIVIDE ( [RFM Repeat Customers], [RFM Segment Customers] )
+		formatString: 0.00%
+
+	measure 'RFM Observed Monetary (BRL)' =
+			SUM ( customer_rfm_segments[monetary_brl] )
+		formatString: "#,##0.00"
+
+	measure 'RFM Mean Recency (Days)' =
+			AVERAGE ( customer_rfm_segments[recency_days] )
+		formatString: "0.00"
+
+	measure 'RFM Mean Frequency' =
+			AVERAGE ( customer_rfm_segments[frequency] )
+		formatString: "0.00"
+
+	measure 'Forecast Actual Value' =
+			AVERAGE ( forecast_outputs[actual_value] )
+		formatString: "#,##0.00"
+
+	measure 'Forecast Predicted Value' =
+			AVERAGE ( forecast_outputs[predicted_value] )
+		formatString: "#,##0.00"
+
+	measure 'Scored Checkout Orders' =
+			COUNTROWS ( delivery_risk_predictions )
+		formatString: "#,##0"
+
 	measure 'High Risk Orders Predicted' =
 			CALCULATE (
 			    COUNTROWS ( delivery_risk_predictions ),
 			    delivery_risk_predictions[predicted_high_risk_flag] = 1
 			)
 		formatString: "#,##0"
+
+	measure 'Mean Predicted Delay Prob %' =
+			AVERAGE ( delivery_risk_predictions[predicted_late_prob] )
+		formatString: 0.00%
+
+	measure 'Observed Delay Rate %' =
+			AVERAGE ( delivery_risk_predictions[is_late] )
+		formatString: 0.00%
+
+	measure 'Decision Baseline Value' =
+			SUM ( decision_scenarios[observed_baseline_value] )
+		formatString: "#,##0.00"
+
+	measure 'Decision Simulated Impact (BRL)' =
+			SUM ( decision_scenarios[simulated_gmv_or_savings_brl] )
+		formatString: "#,##0.00"
+
+	measure 'Decision Illustrative Contribution (BRL)' =
+			SUM ( decision_scenarios[simulated_illustrative_contribution_brl] )
+		formatString: "#,##0.00"
+
+	measure 'Decision Illustrative Net Benefit (BRL)' =
+			SUM ( decision_scenarios[simulated_illustrative_net_benefit_brl] )
+		formatString: "#,##0.00"
 
 	measure 'Base Simulated Impact (BRL)' =
 			CALCULATE (
