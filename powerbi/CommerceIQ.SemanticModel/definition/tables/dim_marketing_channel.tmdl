@@ -22,6 +22,7 @@ table dim_marketing_channel
 		source =
 			let
 				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-				Data = Source{[Schema="commerceiq", Item="dim_marketing_channel"]}[Data]
+				Data = Source{[Schema="commerceiq", Item="dim_marketing_channel"]}[Data],
+				TypedFlags = Table.TransformColumns(Data, {{"is_recorded_origin", each if _ = null then null else Int64.From(_), Int64.Type}})
 			in
-				Data
+				TypedFlags

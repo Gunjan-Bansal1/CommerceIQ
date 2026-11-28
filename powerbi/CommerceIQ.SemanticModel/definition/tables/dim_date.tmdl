@@ -76,6 +76,8 @@ table dim_date
 		source =
 			let
 				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-				Data = Source{[Schema="commerceiq", Item="dim_date"]}[Data]
+				Data = Source{[Schema="commerceiq", Item="dim_date"]}[Data],
+				ValidDates = Table.SelectRows(Data, each [date_key] > 0 and [full_date] <> null),
+				TypedFlags = Table.TransformColumns(ValidDates, {{"is_weekend", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_core_reporting_period", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_brazil_national_holiday", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_brazil_any_holiday", each if _ = null then null else Int64.From(_), Int64.Type}})
 			in
-				Data
+				TypedFlags

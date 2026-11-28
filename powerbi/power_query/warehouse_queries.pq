@@ -2,14 +2,22 @@
 // Connects to MySQL Warehouse (`commerceiq`, requires 64-bit MySQL Connector/NET 8.0.x)
 // and strongly typed downstream Phase 11/12/14 CSV outputs.
 
-// 1-12: Warehouse Tables (dim_date, dim_geography, dim_customer, dim_seller,
-// dim_product, dim_payment_type, dim_marketing_channel, fact_orders,
-// fact_order_items, fact_payments, fact_reviews, fact_marketing_funnel)
+// 1. dim_date (filters out unknown member date_key = -1 with NULL full_date; normalizes tinyint(1) flags)
 let
     Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-    Data = Source{[Schema="commerceiq", Item="fact_orders"]}[Data]
+    Data = Source{[Schema="commerceiq", Item="dim_date"]}[Data],
+    ValidDates = Table.SelectRows(Data, each [date_key] > 0 and [full_date] <> null),
+    TypedFlags = Table.TransformColumns(ValidDates, {{"is_weekend", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_core_reporting_period", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_brazil_national_holiday", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_brazil_any_holiday", each if _ = null then null else Int64.From(_), Int64.Type}})
 in
-    Data
+    TypedFlags
+
+// 2-12: Remaining Warehouse Tables (example: fact_orders with tinyint(1) -> Int64.Type normalization)
+let
+    Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
+    Data = Source{[Schema="commerceiq", Item="fact_orders"]}[Data],
+    TypedFlags = Table.TransformColumns(Data, {{"is_delivered", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_canceled", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_unavailable", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_unsuccessful", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_core_reporting_period", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_order_items", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_payment_records", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_review_records", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_written_review", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_valid_delivery_promise_comparison", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_on_time_delivery", each if _ = null then null else Int64.From(_), Int64.Type}})
+in
+    TypedFlags
 
 // 13. customer_rfm_segments (Typed CSV)
 let

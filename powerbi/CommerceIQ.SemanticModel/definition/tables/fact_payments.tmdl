@@ -63,6 +63,7 @@ table fact_payments
 		source =
 			let
 				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-				Data = Source{[Schema="commerceiq", Item="fact_payments"]}[Data]
+				Data = Source{[Schema="commerceiq", Item="fact_payments"]}[Data],
+				TypedFlags = Table.TransformColumns(Data, {{"is_zero_installment", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_zero_payment", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_multi_payment_order", each if _ = null then null else Int64.From(_), Int64.Type}})
 			in
-				Data
+				TypedFlags

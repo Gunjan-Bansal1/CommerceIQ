@@ -86,6 +86,7 @@ table fact_order_items
 		source =
 			let
 				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-				Data = Source{[Schema="commerceiq", Item="fact_order_items"]}[Data]
+				Data = Source{[Schema="commerceiq", Item="fact_order_items"]}[Data],
+				TypedFlags = Table.TransformColumns(Data, {{"is_delivered", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_core_reporting_period", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_same_state_fulfillment", each if _ = null then null else Int64.From(_), Int64.Type}})
 			in
-				Data
+				TypedFlags

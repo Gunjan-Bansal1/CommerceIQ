@@ -184,6 +184,7 @@ table fact_orders
 		source =
 			let
 				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-				Data = Source{[Schema="commerceiq", Item="fact_orders"]}[Data]
+				Data = Source{[Schema="commerceiq", Item="fact_orders"]}[Data],
+				TypedFlags = Table.TransformColumns(Data, {{"is_delivered", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_canceled", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_unavailable", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_unsuccessful", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_core_reporting_period", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_order_items", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_payment_records", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_review_records", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_written_review", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_valid_delivery_promise_comparison", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_on_time_delivery", each if _ = null then null else Int64.From(_), Int64.Type}})
 			in
-				Data
+				TypedFlags

@@ -70,6 +70,7 @@ table fact_reviews
 		source =
 			let
 				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-				Data = Source{[Schema="commerceiq", Item="fact_reviews"]}[Data]
+				Data = Source{[Schema="commerceiq", Item="fact_reviews"]}[Data],
+				TypedFlags = Table.TransformColumns(Data, {{"has_written_review", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_review_title", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_on_time_delivery", each if _ = null then null else Int64.From(_), Int64.Type}})
 			in
-				Data
+				TypedFlags

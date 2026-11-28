@@ -45,7 +45,7 @@ table dim_geography
 		dataType: int64
 		sourceColumn: has_geolocation_match
 
-	column state_brazil = dim_geography[state] & ", Brazil"
+	column state_brazil = IF ( dim_geography[state] = "NA", BLANK (), dim_geography[state] & ", Brazil" )
 		dataType: string
 		dataCategory: StateOrProvince
 
@@ -54,6 +54,7 @@ table dim_geography
 		source =
 			let
 				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-				Data = Source{[Schema="commerceiq", Item="dim_geography"]}[Data]
+				Data = Source{[Schema="commerceiq", Item="dim_geography"]}[Data],
+				TypedFlags = Table.TransformColumns(Data, {{"is_ambiguous_zip", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_geolocation_match", each if _ = null then null else Int64.From(_), Int64.Type}})
 			in
-				Data
+				TypedFlags

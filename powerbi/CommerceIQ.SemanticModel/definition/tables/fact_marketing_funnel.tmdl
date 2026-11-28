@@ -79,6 +79,7 @@ table fact_marketing_funnel
 		source =
 			let
 				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-				Data = Source{[Schema="commerceiq", Item="fact_marketing_funnel"]}[Data]
+				Data = Source{[Schema="commerceiq", Item="fact_marketing_funnel"]}[Data],
+				TypedFlags = Table.TransformColumns(Data, {{"has_closed_deal", each if _ = null then null else Int64.From(_), Int64.Type}, {"has_marketplace_seller_match", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_valid_conversion_duration", each if _ = null then null else Int64.From(_), Int64.Type}})
 			in
-				Data
+				TypedFlags

@@ -141,6 +141,11 @@ def test_powerbi_pbir_and_tmdl_bindings():
             measures = set(re.findall(r"^\tmeasure\s+'([^']+)'", txt, flags=re.M))
         elif p.stem in {"customer_rfm_segments", "forecast_outputs", "delivery_risk_predictions", "decision_scenarios"}:
             assert "Table.TransformColumnTypes" in txt
+            assert '"en-US"' in txt
+        elif p.stem == "dim_date":
+            assert "[date_key] > 0 and [full_date] <> null" in txt
+            assert "\tisKey" in txt
+            assert "Int64.From" in txt
 
     assert len(model_cols) == 17
     assert len(measures) >= 60
@@ -168,3 +173,87 @@ def test_powerbi_pbir_and_tmdl_bindings():
                         assert prop in model_cols[ent]
                         assert it.get("active") is True
     assert total_vis == 84
+
+
+@pytest.mark.skipif(not _mysql_available(), reason="Local MySQL commerceiq database unreachable in this environment")
+def test_powerbi_source_data_relationship_and_date_compatibility():
+    """Verify MySQL & CSV source keys satisfy VertiPaq 1:N, isKey, and tinyint(1) rules."""
+    tables_dir = PROJECT_ROOT / "powerbi" / "CommerceIQ.SemanticModel" / "definition" / "tables"
+
+    conn = get_connection(database=get_database_name())
+    cur = conn.cursor()
+    try:
+        # 1. Filtered dim_date calendar must have 0 NULLs, 0 duplicates, and 0 missing days
+        cur.execute(
+            """
+            SELECT COUNT(*),
+                   SUM(CASE WHEN full_date IS NULL THEN 1 ELSE 0 END),
+                   COUNT(full_date) - COUNT(DISTINCT full_date),
+                   DATEDIFF(MAX(full_date), MIN(full_date)) + 1
+            FROM dim_date
+            WHERE date_key > 0 AND full_date IS NOT NULL
+            """
+        )
+        valid_rows, nulls, dups, span_days = cur.fetchone()
+        assert int(nulls) == 0 and int(dups) == 0
+        assert int(valid_rows) == int(span_days) == 1827
+
+        # 2. Active date foreign keys must never hit unknown -1 or NULL
+        for tbl, col in [
+            ("fact_orders", "purchase_date_key"),
+            ("fact_orders", "estimated_date_key"),
+            ("fact_marketing_funnel", "first_contact_date_key"),
+        ]:
+            cur.execute(f"SELECT COUNT(*) FROM {tbl} WHERE {col} IS NULL OR {col} <= 0")
+            assert int(cur.fetchone()[0]) == 0, f"Invalid active date FK in {tbl}.{col}"
+
+        # 3. Every 1-side relationship target key must be unique and non-null
+        one_side_targets = [
+            ("dim_customer", "customer_key"),
+            ("dim_geography", "geo_key"),
+            ("dim_seller", "seller_key"),
+            ("dim_product", "product_key"),
+            ("dim_payment_type", "payment_type_key"),
+            ("dim_marketing_channel", "channel_key"),
+            ("fact_orders", "order_key"),
+            ("fact_orders", "order_id"),
+        ]
+        for tbl, col in one_side_targets:
+            cur.execute(f"SELECT COUNT(*), SUM(CASE WHEN {col} IS NULL THEN 1 ELSE 0 END), COUNT(DISTINCT {col}) FROM {tbl}")
+            tot, nulls_cnt, uniq_cnt = cur.fetchone()
+            assert int(nulls_cnt) == 0 and int(tot) == int(uniq_cnt), f"Invalid 1-side key {tbl}.{col}"
+
+        # 4. Every warehouse table with tinyint(1) columns must normalize flags in TMDL M partition
+        cur.execute(
+            """
+            SELECT table_name, column_name
+            FROM information_schema.columns
+            WHERE table_schema = %s
+              AND (table_name LIKE 'dim\\_%' OR table_name LIKE 'fact\\_%')
+              AND LOWER(column_type) LIKE 'tinyint(1)%'
+            """,
+            (get_database_name(),),
+        )
+        for tname, cname in cur.fetchall():
+            tmdl_txt = (tables_dir / f"{tname}.tmdl").read_text(encoding="utf-8")
+            assert f'"{cname}"' in tmdl_txt and "Int64.From" in tmdl_txt, (
+                f"Missing tinyint(1) -> Int64.From normalization for {tname}.{cname}"
+            )
+
+        cur.execute("SELECT order_id FROM fact_orders")
+        valid_order_ids = {r[0] for r in cur.fetchall()}
+    finally:
+        cur.close()
+        conn.close()
+
+    # 5. CSV partitions exist cleanly and delivery_risk_predictions aligns 100% with fact_orders
+    for csv_name in ["customer_rfm_segments", "forecast_outputs", "delivery_risk_predictions", "decision_scenarios"]:
+        csv_path = PROJECT_ROOT / "data" / "processed" / f"{csv_name}.csv"
+        assert csv_path.is_file()
+        tmdl_txt = (tables_dir / f"{csv_name}.tmdl").read_text(encoding="utf-8")
+        assert str(csv_path.resolve()) in tmdl_txt
+        if csv_name == "delivery_risk_predictions":
+            risk_df = pd.read_csv(csv_path, usecols=["order_id"])
+            assert risk_df["order_id"].notna().all()
+            assert risk_df["order_id"].is_unique
+            assert set(risk_df["order_id"]).issubset(valid_order_ids)

@@ -55,6 +55,7 @@ table dim_customer
 		source =
 			let
 				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-				Data = Source{[Schema="commerceiq", Item="dim_customer"]}[Data]
+				Data = Source{[Schema="commerceiq", Item="dim_customer"]}[Data],
+				TypedFlags = Table.TransformColumns(Data, {{"has_geolocation_match", each if _ = null then null else Int64.From(_), Int64.Type}, {"is_repeat_customer", each if _ = null then null else Int64.From(_), Int64.Type}})
 			in
-				Data
+				TypedFlags

@@ -145,8 +145,8 @@ Launch the live 10-page interactive application backed directly by MySQL `commer
    python -m pytest tests/ -v
    ```
 5. **Open & Refresh Power BI Desktop (`PBIDesktopStore.exe`)**
-   - Install **64-bit MySQL Connector/NET 8.0.x** (e.g., `8.0.36`, not `9.x`) from https://dev.mysql.com/downloads/connector/net/ with Administrator privileges so `.NET` registers `MySql.Data.MySqlClient`.
-   - Open [`powerbi/CommerceIQ.pbip`](file:///c:/Users/bgunj/Desktop/commerceIQ/powerbi/CommerceIQ.pbip) in Power BI Desktop, enter local MySQL credentials for `localhost / commerceiq`, approve **Organizational** privacy levels if prompted, and click **Refresh** to hydrate all 17 model tables across all 10 report pages (84 bound visuals).
+   - Ensure **64-bit MySQL Connector/NET 8.0.x** (`MySql.Data.MySqlClient`) is installed on Windows.
+   - Open [`powerbi/CommerceIQ.pbip`](file:///c:/Users/bgunj/Desktop/commerceIQ/powerbi/CommerceIQ.pbip) in Power BI Desktop, enter local MySQL credentials for `localhost / commerceiq`, approve **Organizational** privacy levels if prompted, and click **Refresh** to hydrate all 17 model tables (`dim_date` automatically filters out unknown row `-1` so `full_date` stays continuous and `tinyint(1)` flags cast cleanly to `Int64.Type`) across all 10 report pages (84 bound visuals).
 
 ---
 

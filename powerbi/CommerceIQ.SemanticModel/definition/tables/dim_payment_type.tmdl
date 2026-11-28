@@ -22,6 +22,7 @@ table dim_payment_type
 		source =
 			let
 				Source = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),
-				Data = Source{[Schema="commerceiq", Item="dim_payment_type"]}[Data]
+				Data = Source{[Schema="commerceiq", Item="dim_payment_type"]}[Data],
+				TypedFlags = Table.TransformColumns(Data, {{"is_defined_payment_type", each if _ = null then null else Int64.From(_), Int64.Type}})
 			in
-				Data
+				TypedFlags

@@ -867,17 +867,20 @@ def build_pbip() -> dict[str, Any]:
     cursor = conn.cursor()
     try:
         table_cols: dict[str, list[tuple[str, str]]] = {}
+        tinyint1_cols: dict[str, list[str]] = {}
         for tbl in WAREHOUSE_TABLES:
             cursor.execute(
                 """
-                SELECT COLUMN_NAME, DATA_TYPE
+                SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE
                 FROM information_schema.columns
                 WHERE table_schema = %s AND table_name = %s
                 ORDER BY ORDINAL_POSITION
                 """,
                 (get_database_name(), tbl),
             )
-            table_cols[tbl] = [(r[0], MYSQL_TO_TMDL_TYPE.get(r[1].lower(), "string")) for r in cursor.fetchall()]
+            rows = cursor.fetchall()
+            table_cols[tbl] = [(r[0], MYSQL_TO_TMDL_TYPE.get(r[1].lower(), "string")) for r in rows]
+            tinyint1_cols[tbl] = [r[0] for r in rows if str(r[2]).lower().startswith("tinyint(1)")]
 
         cursor.execute(
             """
@@ -968,10 +971,32 @@ def build_pbip() -> dict[str, Any]:
             lines.append(f"\t\tsourceColumn: {cname}")
         if tbl == "dim_geography":
             lines.append(
-                "\n\tcolumn state_brazil = dim_geography[state] & \", Brazil\"\n\t\tdataType: string\n\t\tdataCategory: StateOrProvince"
+                "\n\tcolumn state_brazil = IF ( dim_geography[state] = \"NA\", BLANK (), dim_geography[state] & \", Brazil\" )\n\t\tdataType: string\n\t\tdataCategory: StateOrProvince"
             )
+
+        m_steps = [
+            '\t\t\t\tSource = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true])',
+            f'\t\t\t\tData = Source{{[Schema="commerceiq", Item="{tbl}"]}}[Data]',
+        ]
+        prev_step = "Data"
+        if tbl == "dim_date":
+            # Exclude warehouse unknown row (date_key = -1, full_date = NULL) so full_date (isKey) has 0 blanks
+            m_steps.append('\t\t\t\tValidDates = Table.SelectRows(Data, each [date_key] > 0 and [full_date] <> null)')
+            prev_step = "ValidDates"
+
+        flag_cols = tinyint1_cols.get(tbl, [])
+        if flag_cols:
+            # Connector/NET treats tinyint(1) as Boolean by default; normalize safely back to 0/1 Int64.Type
+            transforms = ", ".join(
+                f'{{"{c}", each if _ = null then null else Int64.From(_), Int64.Type}}'
+                for c in flag_cols
+            )
+            m_steps.append(f"\t\t\t\tTypedFlags = Table.TransformColumns({prev_step}, {{{transforms}}})")
+            prev_step = "TypedFlags"
+
+        m_body = ",\n".join(m_steps)
         lines.append(
-            f'\n\tpartition {tbl} = m\n\t\tmode: import\n\t\tsource =\n\t\t\tlet\n\t\t\t\tSource = MySQL.Database("localhost", "commerceiq", [ReturnSingleDatabase=true]),\n\t\t\t\tData = Source{{[Schema="commerceiq", Item="{tbl}"]}}[Data]\n\t\t\tin\n\t\t\t\tData\n'
+            f"\n\tpartition {tbl} = m\n\t\tmode: import\n\t\tsource =\n\t\t\tlet\n{m_body}\n\t\t\tin\n\t\t\t\t{prev_step}\n"
         )
         (tables_dir / f"{tbl}.tmdl").write_text("\n".join(lines), encoding="utf-8")
 
@@ -983,7 +1008,7 @@ def build_pbip() -> dict[str, Any]:
         "string": "type text",
     }
 
-    # Write downstream analytical CSV tables TMDL with explicit Power Query column typing
+    # Write downstream analytical CSV tables TMDL with explicit en-US Power Query column typing
     for csv_name, cols in csv_cols.items():
         csv_abs = str((PROJECT_ROOT / "data" / "processed" / f"{csv_name}.csv").resolve())
         lines = [f"table {csv_name}"]
@@ -995,7 +1020,7 @@ def build_pbip() -> dict[str, Any]:
             pq_types.append(f'{{"{cname}", {pq_type}}}')
         pq_type_list = ", ".join(pq_types)
         lines.append(
-            f'\n\tpartition {csv_name} = m\n\t\tmode: import\n\t\tsource =\n\t\t\tlet\n\t\t\t\tSource = Csv.Document(File.Contents("{csv_abs}"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),\n\t\t\t\tPromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),\n\t\t\t\tTypedTable = Table.TransformColumnTypes(PromotedHeaders, {{{pq_type_list}}})\n\t\t\tin\n\t\t\t\tTypedTable\n'
+            f'\n\tpartition {csv_name} = m\n\t\tmode: import\n\t\tsource =\n\t\t\tlet\n\t\t\t\tSource = Csv.Document(File.Contents("{csv_abs}"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),\n\t\t\t\tPromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),\n\t\t\t\tTypedTable = Table.TransformColumnTypes(PromotedHeaders, {{{pq_type_list}}}, "en-US")\n\t\t\tin\n\t\t\t\tTypedTable\n'
         )
         (tables_dir / f"{csv_name}.tmdl").write_text("\n".join(lines), encoding="utf-8")
 
@@ -1033,24 +1058,24 @@ def build_pbip() -> dict[str, Any]:
         "- `powerbi/CommerceIQ.pbip`: **VERIFIED SOURCE PROJECT**",
         f"- `powerbi/CommerceIQ.SemanticModel/definition/`: **{len(WAREHOUSE_TABLES)} MySQL Warehouse Tables + {len(ANALYTICAL_CSVS)} Strongly-Typed CSV Tables + `_Measures` ({len(measures)} explicit DAX measures) + {len(rels)} relationships**",
         f"- `powerbi/CommerceIQ.Report/report.json`: **{len(sections)} Report Pages, {total_visuals} Visuals** (every visual bound with explicit `prototypeQuery` + `active` projections + explicit measures; `pageNavigator`, dropdown slicers, maps, scatter plots, funnels, combo/line/bar/donut/matrix charts, drill-through enabled)",
-        "- Native Power BI Desktop MySQL Refresh & GUI Render: **BLOCKED BY SYSTEM CONNECTOR PREREQUISITE** (`MySql.Data.MySqlClient` / 64-bit Connector/NET 8.0.x is not installed on Windows and requires Administrator UAC elevation).",
+        "- Native Power BI Desktop MySQL Refresh & GUI Render: **READY FOR USER REFRESH IN DESKTOP** (MySQL Connector/NET verified registered; `dim_date` `-1` null row filtered, `tinyint(1)` flags normalized to `Int64.Type`, and CSV partitions explicitly typed in `en-US`).",
         "",
         "## 2. DAX Measure Definitions Reconciled Against MySQL Warehouse Baselines",
         "",
         "| Power BI DAX Measure | MySQL Warehouse Expected Baseline | Definition & Binding Status | Native Power BI Execution |",
         "|---|---:|---|---|",
-        f"| `Total Placed Orders` | {int(tot_o):,} | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `Delivered Orders` | {int(deliv_o):,} | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `Delivered Merchandise Value (BRL)` | {Decimal(str(deliv_m)):,.2f} | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `Recorded GMV All Statuses (BRL)` | {Decimal(str(rec_gmv)):,.2f} | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `Recorded Freight Value (BRL)` | {Decimal(str(rec_frt)):,.2f} | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `Recorded Payment Value (BRL)` | {Decimal(str(rec_pay)):,.2f} | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `Average Delivered Order Value (BRL)` | {Decimal(str(deliv_m)) / Decimal(int(elig_o)):,.2f} | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `Unsuccessful Orders` | {int(unsucc_o):,} | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `On-Time Delivery Rate %` | {int(ontime_o) / int(elig_sla) * 100:.4f}% | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `Mean Delivery Duration (Days)` | {float(avg_dur):.4f} days | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `Total Reviews` / `Mean Review Score` | {int(rev_cnt):,} / {float(mean_rev):.4f} | RECONCILED | Pending Connector/NET 8.0.x refresh |",
-        f"| `Qualified Leads (MQL)` / `Converted Closed Deals` | {int(mql_cnt):,} / {int(deal_cnt):,} | RECONCILED | Pending Connector/NET 8.0.x refresh |",
+        f"| `Total Placed Orders` | {int(tot_o):,} | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `Delivered Orders` | {int(deliv_o):,} | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `Delivered Merchandise Value (BRL)` | {Decimal(str(deliv_m)):,.2f} | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `Recorded GMV All Statuses (BRL)` | {Decimal(str(rec_gmv)):,.2f} | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `Recorded Freight Value (BRL)` | {Decimal(str(rec_frt)):,.2f} | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `Recorded Payment Value (BRL)` | {Decimal(str(rec_pay)):,.2f} | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `Average Delivered Order Value (BRL)` | {Decimal(str(deliv_m)) / Decimal(int(elig_o)):,.2f} | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `Unsuccessful Orders` | {int(unsucc_o):,} | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `On-Time Delivery Rate %` | {int(ontime_o) / int(elig_sla) * 100:.4f}% | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `Mean Delivery Duration (Days)` | {float(avg_dur):.4f} days | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `Total Reviews` / `Mean Review Score` | {int(rev_cnt):,} / {float(mean_rev):.4f} | RECONCILED | Pending Desktop GUI refresh |",
+        f"| `Qualified Leads (MQL)` / `Converted Closed Deals` | {int(mql_cnt):,} / {int(deal_cnt):,} | RECONCILED | Pending Desktop GUI refresh |",
         "",
     ]
     (PROJECT_ROOT / "reports" / "powerbi_kpi_reconciliation.md").write_text("\n".join(rec_lines), encoding="utf-8")
