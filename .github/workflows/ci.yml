@@ -25,7 +25,7 @@ jobs:
           pip install pytest pandas numpy pyarrow openpyxl pyyaml python-dotenv scikit-learn scipy statsmodels matplotlib seaborn mysql-connector-python SQLAlchemy python-pptx
 
       - name: Validate Python syntax
-        run: python -m compileall -q src pipelines tests
+        run: python -m compileall -q src pipelines app tests
 
       - name: Run CI-safe unit & security tests
         run: python -m pytest tests/test_ci_synthetic.py tests/test_security.py -v
@@ -57,7 +57,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install MySQL connector
-        run: pip install mysql-connector-python pandas python-dotenv PyYAML
+        run: pip install mysql-connector-python SQLAlchemy pandas python-dotenv PyYAML
 
       - name: Execute operational & warehouse DDL on disposable MySQL 8.0
         env:
